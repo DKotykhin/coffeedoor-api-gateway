@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 
 import { validate } from './utils/env.validator';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
+import { MenuItemModule } from './menu-item/menu-item.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { MenuCategoryModule } from './menu-category/menu-category.module';
       validate,
     }),
     MenuCategoryModule,
+    MenuItemModule,
   ],
   controllers: [],
   providers: [],

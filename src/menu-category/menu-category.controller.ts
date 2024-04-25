@@ -1,34 +1,72 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { MenuCategoryService } from './menu-category.service';
-import { CreateMenuCategoryDto } from './dto/create-menu-category.dto';
-import { UpdateMenuCategoryDto } from './dto/update-menu-category.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
 
-@Controller('menu-category')
+import { LanguageCode, MenuCategory, StatusResponseDto } from '../types/_index';
+import { MenuCategoryService } from './menu-category.service';
+import {
+  ChangeMenuCategoryPositionDto,
+  CreateMenuCategoryDto,
+  UpdateMenuCategoryDto,
+} from './dto/_index';
+
+@Controller('all-menu')
+export class AllMenuController {
+  constructor(private readonly menuCategoryService: MenuCategoryService) {}
+
+  @Get()
+  findByLanguage(@Query('language') language: LanguageCode): Promise<any> {
+    return this.menuCategoryService.findByLanguage(language);
+  }
+}
+@Controller('menu-categories')
 export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
-  @Post()
-  create(@Body() createMenuCategoryDto: CreateMenuCategoryDto) {
-    return this.menuCategoryService.create(createMenuCategoryDto);
-  }
-
   @Get()
-  findAll() {
+  findAll(): Promise<Observable<MenuCategory[]>> {
     return this.menuCategoryService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.menuCategoryService.findOne(+id);
+  findById(@Param('id') id: string): Promise<Observable<MenuCategory>> {
+    return this.menuCategoryService.findById(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuCategoryDto: UpdateMenuCategoryDto) {
-    return this.menuCategoryService.update(+id, updateMenuCategoryDto);
+  @Post()
+  create(
+    @Body() createMenuCategoryDto: CreateMenuCategoryDto,
+  ): Promise<Observable<MenuCategory>> {
+    return this.menuCategoryService.create(createMenuCategoryDto);
+  }
+
+  @Patch('update/:id')
+  update(
+    @Param('id') id: string,
+    @Body() updateMenuCategoryDto: UpdateMenuCategoryDto,
+  ): Promise<Observable<MenuCategory>> {
+    return this.menuCategoryService.update(id, updateMenuCategoryDto);
+  }
+
+  @Patch('change-position')
+  changePosition(
+    @Body() changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
+  ): Promise<Observable<MenuCategory>> {
+    return this.menuCategoryService.changePosition(
+      changeMenuCategoryPositionDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.menuCategoryService.remove(+id);
+  remove(@Param('id') id: string): Promise<Observable<StatusResponseDto>> {
+    return this.menuCategoryService.remove(id);
   }
 }

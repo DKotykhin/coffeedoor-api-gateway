@@ -1,16 +1,17 @@
 import {
   IsBoolean,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { LanguageCode } from '../../types/enums';
 
-import { CreateMenuCategoryDto } from './create-menu-category.dto';
+export class CreateMenuItemDto {
+  @IsEnum(LanguageCode)
+  language: LanguageCode;
 
-export class UpdateMenuCategoryDto extends PartialType(CreateMenuCategoryDto) {
-  @IsOptional()
   @IsNotEmpty()
   @IsString()
   title: string;
@@ -19,15 +20,18 @@ export class UpdateMenuCategoryDto extends PartialType(CreateMenuCategoryDto) {
   @IsString()
   description: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  image?: string;
+  price: string;
 
   @IsOptional()
   @IsBoolean()
-  hidden?: boolean;
+  hidden: boolean;
 
-  @IsOptional()
   @IsNumber()
   position: number;
+
+  @IsNotEmpty()
+  @IsString()
+  categoryId: string;
 }

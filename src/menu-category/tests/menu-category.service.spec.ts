@@ -1,12 +1,19 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MenuCategoryService } from './menu-category.service';
+
+import { MenuCategoryService } from '../menu-category.service';
 
 describe('MenuCategoryService', () => {
   let service: MenuCategoryService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MenuCategoryService],
+      providers: [
+        MenuCategoryService,
+        {
+          provide: 'MENU_SERVICE',
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<MenuCategoryService>(MenuCategoryService);

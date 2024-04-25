@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
-import { CreateMenuCategoryDto } from './dto/create-menu-category.dto';
-import { UpdateMenuCategoryDto } from './dto/update-menu-category.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+
+import { LanguageCode } from '../types/enums';
+import {
+  ChangeMenuCategoryPositionDto,
+  CreateMenuCategoryDto,
+  UpdateMenuCategoryDto,
+} from './dto/_index';
 
 @Injectable()
 export class MenuCategoryService {
-  create(createMenuCategoryDto: CreateMenuCategoryDto) {
-    return 'This action adds a new menuCategory';
+  constructor(
+    @Inject('MENU_SERVICE') private readonly menuService: ClientProxy,
+  ) {}
+
+  async findByLanguage(language: LanguageCode) {
+    return this.menuService.send('findMenuCategoryByLanguage', language);
   }
 
-  findAll() {
-    return `This action returns all menuCategory`;
+  async findAll() {
+    return this.menuService.send('findAllMenuCategory', {});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} menuCategory`;
+  async findById(id: string) {
+    return this.menuService.send('findMenuCategoryById', id);
   }
 
-  update(id: number, updateMenuCategoryDto: UpdateMenuCategoryDto) {
-    return `This action updates a #${id} menuCategory`;
+  async create(createMenuCategoryDto: CreateMenuCategoryDto) {
+    return this.menuService.send('createMenuCategory', createMenuCategoryDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} menuCategory`;
+  async update(id: string, updateMenuCategoryDto: UpdateMenuCategoryDto) {
+    return this.menuService.send('updateMenuCategory', {
+      id,
+      ...updateMenuCategoryDto,
+    });
+  }
+
+  async changePosition(
+    changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
+  ) {
+    return this.menuService.send(
+      'changeMenuCategoryPosition',
+      changeMenuCategoryPositionDto,
+    );
+  }
+
+  async remove(id: string) {
+    return this.menuService.send('removeMenuCategory', id);
   }
 }

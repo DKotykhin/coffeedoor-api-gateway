@@ -7,6 +7,12 @@ const logger = new Logger('env.validator.ts');
 class EnvironmentVariables {
   @IsNotEmpty()
   HTTP_PORT: string;
+
+  @IsNotEmpty()
+  MENU_SERVICE_HOST: string;
+
+  @IsNotEmpty()
+  MENU_SERVICE_PORT: string;
 }
 
 export function validate(config: Record<string, unknown>) {

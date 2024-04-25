@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MenuCategoryController } from './menu-category.controller';
-import { MenuCategoryService } from './menu-category.service';
+
+import { MenuCategoryController } from '../menu-category.controller';
+import { MenuCategoryService } from '../menu-category.service';
 
 describe('MenuCategoryController', () => {
   let controller: MenuCategoryController;
@@ -9,7 +10,10 @@ describe('MenuCategoryController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MenuCategoryController],
       providers: [MenuCategoryService],
-    }).compile();
+    })
+      .overrideProvider(MenuCategoryService)
+      .useValue({})
+      .compile();
 
     controller = module.get<MenuCategoryController>(MenuCategoryController);
   });
