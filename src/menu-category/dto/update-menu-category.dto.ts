@@ -21,11 +21,11 @@ export class UpdateMenuCategoryDto extends PartialType(CreateMenuCategoryDto) {
 
   @IsOptional()
   @IsString()
-  image?: string;
+  image: string;
 
   @IsOptional()
   @IsBoolean()
-  hidden?: boolean;
+  hidden: boolean;
 
   @IsOptional()
   @IsNumber()

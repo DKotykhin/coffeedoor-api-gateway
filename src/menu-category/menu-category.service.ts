@@ -1,52 +1,75 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
-import { LanguageCode } from '../types/enums';
+import { LanguageCode, StatusResponseDto } from '../types/_index';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
+import {
+  CreateMenuCategoryRequest,
+  MenuCategories,
+  MenuCategory,
+  MenuCategoryServiceClient,
+} from './menu-category.pb';
 
 @Injectable()
-export class MenuCategoryService {
+export class MenuCategoryService implements OnModuleInit {
+  private menuCategoryService: MenuCategoryServiceClient;
   constructor(
-    @Inject('MENU_SERVICE') private readonly menuService: ClientProxy,
+    @Inject('MENU_CATEGORY_SERVICE')
+    private readonly menuServiceClient: ClientGrpc,
   ) {}
 
-  async findByLanguage(language: LanguageCode) {
-    return this.menuService.send('findMenuCategoryByLanguage', language);
+  onModuleInit() {
+    this.menuCategoryService = this.menuServiceClient.getService(
+      'MenuCategoryService',
+    );
   }
 
-  async findAll() {
-    return this.menuService.send('findAllMenuCategory', {});
+  findByLanguage(language: LanguageCode): Observable<MenuCategories> {
+    return this.menuCategoryService.getMenuCategoriesByLanguage({
+      language: language === LanguageCode.UA ? 0 : 1,
+    });
   }
 
-  async findById(id: string) {
-    return this.menuService.send('findMenuCategoryById', id);
+  findAll() {
+    return this.menuCategoryService.getAllMenuCategories({});
   }
 
-  async create(createMenuCategoryDto: CreateMenuCategoryDto) {
-    return this.menuService.send('createMenuCategory', createMenuCategoryDto);
+  findById(id: string): Observable<MenuCategory> {
+    return this.menuCategoryService.getMenuCategoryById({ id });
   }
 
-  async update(id: string, updateMenuCategoryDto: UpdateMenuCategoryDto) {
-    return this.menuService.send('updateMenuCategory', {
+  create(
+    createMenuCategoryDto: CreateMenuCategoryDto,
+  ): Observable<MenuCategory> {
+    return this.menuCategoryService.createMenuCategory(
+      createMenuCategoryDto as unknown as CreateMenuCategoryRequest,
+    );
+  }
+
+  update(
+    id: string,
+    updateMenuCategoryDto: UpdateMenuCategoryDto,
+  ): Observable<MenuCategory> {
+    return this.menuCategoryService.updateMenuCategory({
       id,
       ...updateMenuCategoryDto,
     });
   }
 
-  async changePosition(
+  changePosition(
     changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
-  ) {
-    return this.menuService.send(
-      'changeMenuCategoryPosition',
+  ): Observable<MenuCategory> {
+    return this.menuCategoryService.changeMenuCategoryPosition(
       changeMenuCategoryPositionDto,
     );
   }
 
-  async remove(id: string) {
-    return this.menuService.send('removeMenuCategory', id);
+  remove(id: string): Observable<StatusResponseDto> {
+    return this.menuCategoryService.deleteMenuCategory({ id });
   }
 }

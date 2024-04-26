@@ -1,20 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import { join } from 'path';
 
 import { MenuItemService } from './menu-item.service';
 import { MenuItemController } from './menu-item.controller';
+import { MENU_ITEM_PACKAGE_NAME } from './menu-item.pb';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: 'MENU_SERVICE',
+        name: 'MENU_ITEM_SERVICE',
         useFactory: (configService: ConfigService) => ({
-          transport: Transport.TCP,
+          transport: Transport.GRPC,
           options: {
-            host: configService.get<string>('MENU_SERVICE_HOST'),
-            port: configService.get<number>('MENU_SERVICE_PORT'),
+            package: MENU_ITEM_PACKAGE_NAME,
+            protoPath: join(__dirname, '../../proto/menu-item.proto'),
+            url: `${configService.get<string>('MENU_SERVICE_HOST')}:${configService.get<string>('MENU_SERVICE_PORT')}`,
           },
         }),
         inject: [ConfigService],

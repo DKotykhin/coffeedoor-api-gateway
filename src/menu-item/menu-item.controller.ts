@@ -10,13 +10,14 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { MenuItem, StatusResponseDto } from '../types/_index';
+import { StatusResponseDto } from '../types/_index';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItemService } from './menu-item.service';
+import { MenuItem, MenuItems } from './menu-item.pb';
 
 @Controller('menu-items')
 export class MenuItemController {
@@ -25,19 +26,17 @@ export class MenuItemController {
   @Get()
   findAllByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Promise<Observable<MenuItem[]>> {
+  ): Observable<MenuItems> {
     return this.menuItemService.findAllByCategoryId(categoryId);
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<Observable<MenuItem>> {
+  findById(@Param('id') id: string): Observable<MenuItem> {
     return this.menuItemService.findById(id);
   }
 
   @Post()
-  create(
-    @Body() createMenuItemDto: CreateMenuItemDto,
-  ): Promise<Observable<MenuItem>> {
+  create(@Body() createMenuItemDto: CreateMenuItemDto): Observable<MenuItem> {
     return this.menuItemService.create(createMenuItemDto);
   }
 
@@ -45,19 +44,19 @@ export class MenuItemController {
   update(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
-  ): Promise<Observable<MenuItem>> {
+  ): Observable<MenuItem> {
     return this.menuItemService.update(id, updateMenuItemDto);
   }
 
   @Patch('change-position')
   changePosition(
     @Body() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
-  ): Promise<Observable<MenuItem>> {
+  ): Observable<MenuItem> {
     return this.menuItemService.changePosition(changeMenuItemPositionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<Observable<StatusResponseDto>> {
+  remove(@Param('id') id: string): Observable<StatusResponseDto> {
     return this.menuItemService.remove(id);
   }
 }

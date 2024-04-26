@@ -1,45 +1,64 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import { ClientGrpc } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
 
+import { StatusResponseDto } from '../types/_index';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
   UpdateMenuItemDto,
 } from './dto/_index';
+import {
+  CreateMenuItemRequest,
+  MenuItem,
+  MenuItemServiceClient,
+  MenuItems,
+} from './menu-item.pb';
 
 @Injectable()
-export class MenuItemService {
+export class MenuItemService implements OnModuleInit {
+  private menuItemService: MenuItemServiceClient;
   constructor(
-    @Inject('MENU_SERVICE') private readonly menuService: ClientProxy,
+    @Inject('MENU_ITEM_SERVICE') private readonly menuServiceClient: ClientGrpc,
   ) {}
 
-  async findAllByCategoryId(categoryId: string) {
-    return this.menuService.send('findMenuItemsByCategoryId', categoryId);
+  onModuleInit() {
+    this.menuItemService = this.menuServiceClient.getService('MenuItemService');
   }
 
-  async findById(id: string) {
-    return this.menuService.send('findMenuItemById', id);
+  findAllByCategoryId(categoryId: string): Observable<MenuItems> {
+    return this.menuItemService.getMenuItemsByCategoryId({ categoryId });
   }
 
-  async create(createMenuItemDto: CreateMenuItemDto) {
-    return this.menuService.send('createMenuItem', createMenuItemDto);
+  findById(id: string): Observable<MenuItem> {
+    return this.menuItemService.getMenuItemById({ id });
   }
 
-  async update(id: string, updateMenuItemDto: UpdateMenuItemDto) {
-    return this.menuService.send('updateMenuItem', {
+  create(createMenuItemDto: CreateMenuItemDto): Observable<MenuItem> {
+    return this.menuItemService.createMenuItem(
+      createMenuItemDto as unknown as CreateMenuItemRequest,
+    );
+  }
+
+  update(
+    id: string,
+    updateMenuItemDto: UpdateMenuItemDto,
+  ): Observable<MenuItem> {
+    return this.menuItemService.updateMenuItem({
       id,
       ...updateMenuItemDto,
     });
   }
 
-  async changePosition(changeMenuItemPositionDto: ChangeMenuItemPositionDto) {
-    return this.menuService.send(
-      'changeMenuItemPosition',
+  changePosition(
+    changeMenuItemPositionDto: ChangeMenuItemPositionDto,
+  ): Observable<MenuItem> {
+    return this.menuItemService.changeMenuItemPosition(
       changeMenuItemPositionDto,
     );
   }
 
-  async remove(id: string) {
-    return this.menuService.send('removeMenuItem', id);
+  remove(id: string): Observable<StatusResponseDto> {
+    return this.menuItemService.deleteMenuItem({ id });
   }
 }

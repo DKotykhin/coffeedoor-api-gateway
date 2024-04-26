@@ -10,20 +10,23 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { LanguageCode, MenuCategory, StatusResponseDto } from '../types/_index';
+import { LanguageCode, StatusResponseDto } from '../types/_index';
 import { MenuCategoryService } from './menu-category.service';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
+import { MenuCategories, MenuCategory } from './menu-category.pb';
 
 @Controller('all-menu')
 export class AllMenuController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  findByLanguage(@Query('language') language: LanguageCode): Promise<any> {
+  findByLanguage(
+    @Query('language') language: LanguageCode,
+  ): Observable<MenuCategories> {
     return this.menuCategoryService.findByLanguage(language);
   }
 }
@@ -32,19 +35,19 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  findAll(): Promise<Observable<MenuCategory[]>> {
+  findAll(): Observable<MenuCategories> {
     return this.menuCategoryService.findAll();
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<Observable<MenuCategory>> {
+  findById(@Param('id') id: string): Observable<MenuCategory> {
     return this.menuCategoryService.findById(id);
   }
 
   @Post()
   create(
     @Body() createMenuCategoryDto: CreateMenuCategoryDto,
-  ): Promise<Observable<MenuCategory>> {
+  ): Observable<MenuCategory> {
     return this.menuCategoryService.create(createMenuCategoryDto);
   }
 
@@ -52,21 +55,21 @@ export class MenuCategoryController {
   update(
     @Param('id') id: string,
     @Body() updateMenuCategoryDto: UpdateMenuCategoryDto,
-  ): Promise<Observable<MenuCategory>> {
+  ): Observable<MenuCategory> {
     return this.menuCategoryService.update(id, updateMenuCategoryDto);
   }
 
   @Patch('change-position')
   changePosition(
     @Body() changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
-  ): Promise<Observable<MenuCategory>> {
+  ): Observable<MenuCategory> {
     return this.menuCategoryService.changePosition(
       changeMenuCategoryPositionDto,
     );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<Observable<StatusResponseDto>> {
+  remove(@Param('id') id: string): Observable<StatusResponseDto> {
     return this.menuCategoryService.remove(id);
   }
 }
