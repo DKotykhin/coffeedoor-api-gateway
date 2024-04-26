@@ -10,7 +10,7 @@ describe('MenuCategoryService', () => {
       providers: [
         MenuCategoryService,
         {
-          provide: 'MENU_SERVICE',
+          provide: 'MENU_CATEGORY_SERVICE',
           useValue: {},
         },
       ],

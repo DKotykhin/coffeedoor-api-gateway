@@ -9,7 +9,6 @@ import {
   UpdateMenuCategoryDto,
 } from './dto/_index';
 import {
-  CreateMenuCategoryRequest,
   MenuCategories,
   MenuCategory,
   MenuCategoryServiceClient,
@@ -31,7 +30,7 @@ export class MenuCategoryService implements OnModuleInit {
 
   findByLanguage(language: LanguageCode): Observable<MenuCategories> {
     return this.menuCategoryService.getMenuCategoriesByLanguage({
-      language: language === LanguageCode.UA ? 0 : 1,
+      language,
     });
   }
 
@@ -46,9 +45,7 @@ export class MenuCategoryService implements OnModuleInit {
   create(
     createMenuCategoryDto: CreateMenuCategoryDto,
   ): Observable<MenuCategory> {
-    return this.menuCategoryService.createMenuCategory(
-      createMenuCategoryDto as unknown as CreateMenuCategoryRequest,
-    );
+    return this.menuCategoryService.createMenuCategory(createMenuCategoryDto);
   }
 
   update(
