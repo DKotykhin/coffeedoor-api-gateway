@@ -2,7 +2,6 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-import { StatusResponseDto } from '../types/_index';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
@@ -13,6 +12,7 @@ import {
   MenuItem,
   MenuItemServiceClient,
   MenuItems,
+  StatusResponse,
 } from './menu-item.pb';
 
 @Injectable()
@@ -58,7 +58,7 @@ export class MenuItemService implements OnModuleInit {
     );
   }
 
-  remove(id: string): Observable<StatusResponseDto> {
+  remove(id: string): Observable<StatusResponse> {
     return this.menuItemService.deleteMenuItem({ id });
   }
 }

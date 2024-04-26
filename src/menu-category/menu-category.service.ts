@@ -2,7 +2,7 @@ import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
-import { LanguageCode, StatusResponseDto } from '../types/_index';
+import { LanguageCode } from '../types/enums';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
@@ -12,6 +12,7 @@ import {
   MenuCategories,
   MenuCategory,
   MenuCategoryServiceClient,
+  StatusResponse,
 } from './menu-category.pb';
 
 @Injectable()
@@ -66,7 +67,7 @@ export class MenuCategoryService implements OnModuleInit {
     );
   }
 
-  remove(id: string): Observable<StatusResponseDto> {
+  remove(id: string): Observable<StatusResponse> {
     return this.menuCategoryService.deleteMenuCategory({ id });
   }
 }

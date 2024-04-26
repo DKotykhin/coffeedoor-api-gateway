@@ -10,14 +10,13 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { StatusResponseDto } from '../types/_index';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItemService } from './menu-item.service';
-import { MenuItem, MenuItems } from './menu-item.pb';
+import { MenuItem, MenuItems, StatusResponse } from './menu-item.pb';
 
 @Controller('menu-items')
 export class MenuItemController {
@@ -56,7 +55,7 @@ export class MenuItemController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Observable<StatusResponseDto> {
+  remove(@Param('id') id: string): Observable<StatusResponse> {
     return this.menuItemService.remove(id);
   }
 }

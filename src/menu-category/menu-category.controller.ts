@@ -10,14 +10,18 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
-import { LanguageCode, StatusResponseDto } from '../types/_index';
+import { LanguageCode } from '../types/enums';
 import { MenuCategoryService } from './menu-category.service';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
-import { MenuCategories, MenuCategory } from './menu-category.pb';
+import {
+  MenuCategories,
+  MenuCategory,
+  StatusResponse,
+} from './menu-category.pb';
 
 @Controller('all-menu')
 export class AllMenuController {
@@ -69,7 +73,7 @@ export class MenuCategoryController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Observable<StatusResponseDto> {
+  remove(@Param('id') id: string): Observable<StatusResponse> {
     return this.menuCategoryService.remove(id);
   }
 }
