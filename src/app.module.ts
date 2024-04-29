@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { validate } from './utils/env.validator';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
+import { HealthCheckModule } from './health-check/health-check.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MenuItemModule } from './menu-item/menu-item.module';
     }),
     MenuCategoryModule,
     MenuItemModule,
+    HealthCheckModule,
   ],
   controllers: [],
   providers: [],

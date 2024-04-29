@@ -13,6 +13,12 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   MENU_SERVICE_PORT: string;
+
+  @IsNotEmpty()
+  USER_SERVICE_HOST: string;
+
+  @IsNotEmpty()
+  USER_SERVICE_PORT: string;
 }
 
 export function validate(config: Record<string, unknown>) {
