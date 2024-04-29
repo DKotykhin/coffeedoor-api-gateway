@@ -5,6 +5,8 @@ import { validate } from './utils/env.validator';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { HealthCheckModule } from './health-check/health-check.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { HealthCheckModule } from './health-check/health-check.module';
     MenuCategoryModule,
     MenuItemModule,
     HealthCheckModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
