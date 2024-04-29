@@ -7,10 +7,15 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
 
-import { LanguageCode } from '../types/enums';
+import { LanguageCode, RoleTypes } from '../types/enums';
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+
 import { MenuCategoryService } from './menu-category.service';
 import {
   ChangeMenuCategoryPositionDto,
@@ -35,6 +40,8 @@ export class AllMenuController {
   }
 }
 @Controller('menu-categories')
+@HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 

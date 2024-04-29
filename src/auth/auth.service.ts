@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { Response } from 'express';
 
 import { errorCodeImplementation } from '../utils/error-code-implementation';
 import {
@@ -16,6 +17,8 @@ import {
   User,
 } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
+import { JwtPayload } from './dto/jwtPayload.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -23,6 +26,7 @@ export class AuthService implements OnModuleInit {
   protected readonly logger = new Logger(AuthService.name);
   constructor(
     @Inject('AUTH_SERVICE') private readonly authServiceClient: ClientGrpc,
+    private readonly jwtService: JwtService,
   ) {}
 
   onModuleInit() {
@@ -42,9 +46,17 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async signIn(signInDto: SignInDto): Promise<Partial<User>> {
+  async signIn(
+    signInDto: SignInDto,
+    response: Response,
+  ): Promise<Partial<User>> {
     try {
-      return await firstValueFrom(this.authService.signIn(signInDto));
+      const user = await firstValueFrom(this.authService.signIn(signInDto));
+      const payload: JwtPayload = { email: user.email };
+      const auth_token = this.jwtService.sign(payload);
+      response.cookie('auth_token', auth_token, { httpOnly: true });
+      console.log('auth_token:', auth_token);
+      return user;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(

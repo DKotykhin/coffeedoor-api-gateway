@@ -9,5 +9,6 @@ import { UserController } from './user.controller';
   imports: [ClientsModule.registerAsync([userGrpcConfig])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

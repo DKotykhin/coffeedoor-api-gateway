@@ -1,12 +1,29 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { StatusResponse, User } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
+import { GetUser } from './decorators/get-user.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user')
+  getUserByToken(@GetUser() user: Partial<User>): Partial<User> {
+    return user;
+  }
 
   @Post('/sign-up')
   signUp(@Body() signUpDto: SignUpDto): Promise<Partial<User>> {
@@ -14,8 +31,11 @@ export class AuthController {
   }
 
   @Post('/sign-in')
-  signIn(@Body() signInDto: SignInDto): Promise<Partial<User>> {
-    return this.authService.signIn(signInDto);
+  signIn(
+    @Body() signInDto: SignInDto,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<Partial<User>> {
+    return this.authService.signIn(signInDto, response);
   }
 
   @Get('/confirm-email/:token')

@@ -1,11 +1,22 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { EmailDto, PasswordDto } from '../auth/dto/auth.dto';
+import { GetUser } from '../auth/decorators/get-user.decorator';
 import { UserService } from './user.service';
 import { StatusResponse, User } from './user.pb';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
+@UseGuards(AuthGuard('jwt'))
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -21,30 +32,30 @@ export class UserController {
 
   @Patch()
   updateUser(
-    @Body('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
+    @GetUser() user: User,
   ): Promise<User> {
-    return this.userService.updateUser(id, updateUserDto);
+    return this.userService.updateUser(user.id, updateUserDto);
   }
 
   @Delete()
-  deleteUser(@Body('id') id: string): Promise<StatusResponse> {
-    return this.userService.deleteUser(id);
+  deleteUser(@GetUser() user: User): Promise<StatusResponse> {
+    return this.userService.deleteUser(user.id);
   }
 
   @Post('password')
   confirmPassword(
     @Body() passwordDto: PasswordDto,
-    @Body('id') id: string,
+    @GetUser() user: User,
   ): Promise<StatusResponse> {
-    return this.userService.confirmPassword(id, passwordDto.password);
+    return this.userService.confirmPassword(user.id, passwordDto.password);
   }
 
   @Patch('password')
   changePassword(
     @Body() passwordDto: PasswordDto,
-    @Body('id') id: string,
+    @GetUser() user: User,
   ): Promise<StatusResponse> {
-    return this.userService.changePassword(id, passwordDto.password);
+    return this.userService.changePassword(user.id, passwordDto.password);
   }
 }

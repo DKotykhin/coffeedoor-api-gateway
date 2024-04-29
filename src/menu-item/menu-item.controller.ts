@@ -7,8 +7,14 @@ import {
   Post,
   Query,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
+
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { RoleTypes } from '../types/enums';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 import {
   ChangeMenuItemPositionDto,
@@ -19,6 +25,8 @@ import { MenuItemService } from './menu-item.service';
 import { MenuItem, MenuItems, StatusResponse } from './menu-item.pb';
 
 @Controller('menu-items')
+@HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
 
