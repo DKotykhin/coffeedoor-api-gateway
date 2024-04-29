@@ -6,6 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
+import { JwtService } from '@nestjs/jwt';
 import { firstValueFrom } from 'rxjs';
 import { Response } from 'express';
 
@@ -18,7 +19,6 @@ import {
 } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
 import { JwtPayload } from './dto/jwtPayload.dto';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService implements OnModuleInit {

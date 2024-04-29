@@ -10,7 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Observable } from 'rxjs';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RoleTypes } from '../types/enums';
@@ -33,17 +32,17 @@ export class MenuItemController {
   @Get()
   findAllByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Observable<MenuItems> {
+  ): Promise<MenuItems> {
     return this.menuItemService.findAllByCategoryId(categoryId);
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Observable<MenuItem> {
+  findById(@Param('id') id: string): Promise<MenuItem> {
     return this.menuItemService.findById(id);
   }
 
   @Post()
-  create(@Body() createMenuItemDto: CreateMenuItemDto): Observable<MenuItem> {
+  create(@Body() createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
     return this.menuItemService.create(createMenuItemDto);
   }
 
@@ -51,19 +50,19 @@ export class MenuItemController {
   update(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
-  ): Observable<MenuItem> {
+  ): Promise<MenuItem> {
     return this.menuItemService.update(id, updateMenuItemDto);
   }
 
   @Patch('change-position')
   changePosition(
     @Body() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
-  ): Observable<MenuItem> {
+  ): Promise<MenuItem> {
     return this.menuItemService.changePosition(changeMenuItemPositionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Observable<StatusResponse> {
+  remove(@Param('id') id: string): Promise<StatusResponse> {
     return this.menuItemService.remove(id);
   }
 }

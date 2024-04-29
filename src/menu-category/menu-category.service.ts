@@ -1,14 +1,22 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { LanguageCode } from '../types/enums';
+import { errorCodeImplementation } from '../utils/error-code-implementation';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
 import {
+  MENU_CATEGORY_SERVICE_NAME,
   MenuCategories,
   MenuCategory,
   MenuCategoryServiceClient,
@@ -18,6 +26,7 @@ import {
 @Injectable()
 export class MenuCategoryService implements OnModuleInit {
   private menuCategoryService: MenuCategoryServiceClient;
+  protected readonly logger = new Logger(MenuCategoryService.name);
   constructor(
     @Inject('MENU_CATEGORY_SERVICE')
     private readonly menuServiceClient: ClientGrpc,
@@ -25,49 +34,119 @@ export class MenuCategoryService implements OnModuleInit {
 
   onModuleInit() {
     this.menuCategoryService = this.menuServiceClient.getService(
-      'MenuCategoryService',
+      MENU_CATEGORY_SERVICE_NAME,
     );
   }
 
-  findByLanguage(language: LanguageCode): Observable<MenuCategories> {
-    return this.menuCategoryService.getMenuCategoriesByLanguage({
-      language,
-    });
+  async findByLanguage(language: LanguageCode): Promise<MenuCategories> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.getMenuCategoriesByLanguage({
+          language,
+        }),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  findAll() {
-    return this.menuCategoryService.getAllMenuCategories({});
+  async findAll(): Promise<MenuCategories> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.getAllMenuCategories({}),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  findById(id: string): Observable<MenuCategory> {
-    return this.menuCategoryService.getMenuCategoryById({ id });
+  async findById(id: string): Promise<MenuCategory> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.getMenuCategoryById({ id }),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  create(
+  async create(
     createMenuCategoryDto: CreateMenuCategoryDto,
-  ): Observable<MenuCategory> {
-    return this.menuCategoryService.createMenuCategory(createMenuCategoryDto);
+  ): Promise<MenuCategory> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.createMenuCategory(createMenuCategoryDto),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  update(
+  async update(
     id: string,
     updateMenuCategoryDto: UpdateMenuCategoryDto,
-  ): Observable<MenuCategory> {
-    return this.menuCategoryService.updateMenuCategory({
-      id,
-      ...updateMenuCategoryDto,
-    });
+  ): Promise<MenuCategory> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.updateMenuCategory({
+          id,
+          ...updateMenuCategoryDto,
+        }),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  changePosition(
+  async changePosition(
     changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
-  ): Observable<MenuCategory> {
-    return this.menuCategoryService.changeMenuCategoryPosition(
-      changeMenuCategoryPositionDto,
-    );
+  ): Promise<MenuCategory> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.changeMenuCategoryPosition(
+          changeMenuCategoryPositionDto,
+        ),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 
-  remove(id: string): Observable<StatusResponse> {
-    return this.menuCategoryService.deleteMenuCategory({ id });
+  async remove(id: string): Promise<StatusResponse> {
+    try {
+      return await firstValueFrom(
+        this.menuCategoryService.deleteMenuCategory({ id }),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
   }
 }
