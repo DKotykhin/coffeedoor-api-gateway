@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { EmailDto, PasswordDto } from '../auth/dto/auth.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
@@ -15,6 +16,8 @@ import { UserService } from './user.service';
 import { StatusResponse, User } from './user.pb';
 import { UpdateUserDto } from './dto/update-user.dto';
 
+@ApiTags('user')
+@ApiBearerAuth()
 @Controller('user')
 @UseGuards(AuthGuard('jwt'))
 export class UserController {

@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RoleTypes } from '../types/enums';
@@ -23,6 +24,8 @@ import {
 import { MenuItemService } from './menu-item.service';
 import { MenuItem, MenuItems, StatusResponse } from './menu-item.pb';
 
+@ApiTags('menu-items')
+@ApiBearerAuth()
 @Controller('menu-items')
 @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
 @UseGuards(AuthGuard('jwt'), RolesGuard)

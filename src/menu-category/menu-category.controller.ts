@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { LanguageCode, RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { MenuCategoryService } from './menu-category.service';
 import {
@@ -27,6 +28,7 @@ import {
   StatusResponse,
 } from './menu-category.pb';
 
+@ApiTags('menu')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
@@ -38,6 +40,9 @@ export class MenuController {
     return this.menuCategoryService.findByLanguage(language);
   }
 }
+
+@ApiTags('menu-categories')
+@ApiBearerAuth()
 @Controller('menu-categories')
 @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
