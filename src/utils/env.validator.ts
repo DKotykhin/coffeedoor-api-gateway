@@ -15,6 +15,12 @@ class EnvironmentVariables {
   MENU_SERVICE_PORT: string;
 
   @IsNotEmpty()
+  STORE_SERVICE_HOST: string;
+
+  @IsNotEmpty()
+  STORE_SERVICE_PORT: string;
+
+  @IsNotEmpty()
   USER_SERVICE_HOST: string;
 
   @IsNotEmpty()

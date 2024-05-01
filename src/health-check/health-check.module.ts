@@ -3,6 +3,7 @@ import { ClientsModule } from '@nestjs/microservices';
 
 import {
   menuHealthCheckGrpcConfig,
+  storeHealthCheckGrpcConfig,
   userHealthCheckGrpcConfig,
 } from '../config/grpc.config';
 import { HealthCheckService } from './health-check.service';
@@ -13,6 +14,7 @@ import { HealthCheckController } from './health-check.controller';
     ClientsModule.registerAsync([
       menuHealthCheckGrpcConfig,
       userHealthCheckGrpcConfig,
+      storeHealthCheckGrpcConfig,
     ]),
   ],
   controllers: [HealthCheckController],

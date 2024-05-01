@@ -16,6 +16,10 @@ describe('HealthCheckService', () => {
           provide: 'USER_HEALTH_CHECK_SERVICE',
           useValue: {},
         },
+        {
+          provide: 'STORE_HEALTH_CHECK_SERVICE',
+          useValue: {},
+        },
       ],
     }).compile();
 

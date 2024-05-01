@@ -7,6 +7,8 @@ import { MenuItemModule } from './menu-item/menu-item.module';
 import { HealthCheckModule } from './health-check/health-check.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { StoreCategoryModule } from './store-category/store-category.module';
+import { StoreItemModule } from './store-item/store-item.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AuthModule } from './auth/auth.module';
     HealthCheckModule,
     UserModule,
     AuthModule,
+    StoreCategoryModule,
+    StoreItemModule,
   ],
   controllers: [],
   providers: [],

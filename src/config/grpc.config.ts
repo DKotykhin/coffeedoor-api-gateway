@@ -7,6 +7,8 @@ import { MENU_ITEM_PACKAGE_NAME } from '../menu-item/menu-item.pb';
 import { HEALTH_CHECK_PACKAGE_NAME } from '../health-check/health-check.pb';
 import { AUTH_PACKAGE_NAME } from '../auth/auth.pb';
 import { USER_PACKAGE_NAME } from '../user/user.pb';
+import { STORE_CATEGORY_PACKAGE_NAME } from '../store-category/store-category.pb';
+import { STORE_ITEM_PACKAGE_NAME } from '../store-item/store-item.pb';
 
 export const menuCategoryGrpcConfig: ClientsProviderAsyncOptions = {
   name: 'MENU_CATEGORY_SERVICE',
@@ -81,6 +83,45 @@ export const userGrpcConfig: ClientsProviderAsyncOptions = {
       package: USER_PACKAGE_NAME,
       protoPath: join(__dirname, '../../proto/user/user.proto'),
       url: `${configService.get<string>('USER_SERVICE_HOST')}:${configService.get<string>('USER_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const storeHealthCheckGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'STORE_HEALTH_CHECK_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: HEALTH_CHECK_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/health-check.proto'),
+      url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const storeCategoryGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'STORE_CATEGORY_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: STORE_CATEGORY_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/store/store-category.proto'),
+      url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const storeItemGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'STORE_ITEM_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: STORE_ITEM_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/store/store-item.proto'),
+      url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
     },
   }),
   inject: [ConfigService],
