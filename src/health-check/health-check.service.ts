@@ -16,6 +16,8 @@ export class HealthCheckService implements OnModuleInit {
   private storeService: HealthCheckResponse;
   private userHealthCheckService: HealthCheckClient;
   private userService: HealthCheckResponse;
+  private orderHealthCheckService: HealthCheckClient;
+  private orderService: HealthCheckResponse;
   constructor(
     @Inject('MENU_HEALTH_CHECK_SERVICE')
     private readonly menuHealthCheckClient: ClientGrpc,
@@ -23,6 +25,8 @@ export class HealthCheckService implements OnModuleInit {
     private readonly storeHealthCheckClient: ClientGrpc,
     @Inject('USER_HEALTH_CHECK_SERVICE')
     private readonly userHealthCheckClient: ClientGrpc,
+    @Inject('ORDER_HEALTH_CHECK_SERVICE')
+    private readonly orderHealthCheckClient: ClientGrpc,
   ) {}
 
   onModuleInit() {
@@ -35,12 +39,16 @@ export class HealthCheckService implements OnModuleInit {
     this.storeHealthCheckService = this.storeHealthCheckClient.getService(
       HEALTH_CHECK_SERVICE_NAME,
     );
+    this.orderHealthCheckService = this.orderHealthCheckClient.getService(
+      HEALTH_CHECK_SERVICE_NAME,
+    );
   }
 
   async checkHealth(): Promise<{
     menuService: HealthCheckResponse;
     storeService: HealthCheckResponse;
     userService: HealthCheckResponse;
+    orderService: HealthCheckResponse;
   }> {
     try {
       this.menuService = await firstValueFrom(
@@ -66,10 +74,19 @@ export class HealthCheckService implements OnModuleInit {
       this.userService = { status: 0 };
     }
 
+    try {
+      this.orderService = await firstValueFrom(
+        this.orderHealthCheckService.check({}),
+      );
+    } catch (error) {
+      this.orderService = { status: 0 };
+    }
+
     return {
       menuService: this.menuService,
       userService: this.userService,
       storeService: this.storeService,
+      orderService: this.orderService,
     };
   }
 }

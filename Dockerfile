@@ -18,3 +18,5 @@ RUN npm run build
 EXPOSE 4004
 # CMD [ "npm", "run", "start:dev" ]
 CMD [ "npm", "start" ]
+
+# npm config set registry https://registry.npmjs.org/

@@ -9,6 +9,8 @@ import { AUTH_PACKAGE_NAME } from '../auth/auth.pb';
 import { USER_PACKAGE_NAME } from '../user/user.pb';
 import { STORE_CATEGORY_PACKAGE_NAME } from '../store-category/store-category.pb';
 import { STORE_ITEM_PACKAGE_NAME } from '../store-item/store-item.pb';
+import { ORDER_PACKAGE_NAME } from '../order/order.pb';
+import { ORDER_ITEM_PACKAGE_NAME } from '../order-item/order-item.pb';
 
 export const menuCategoryGrpcConfig: ClientsProviderAsyncOptions = {
   name: 'MENU_CATEGORY_SERVICE',
@@ -122,6 +124,45 @@ export const storeItemGrpcConfig: ClientsProviderAsyncOptions = {
       package: STORE_ITEM_PACKAGE_NAME,
       protoPath: join(__dirname, '../../proto/store/store-item.proto'),
       url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const orderHealthCheckGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'ORDER_HEALTH_CHECK_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: HEALTH_CHECK_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/health-check.proto'),
+      url: `${configService.get<string>('ORDER_SERVICE_HOST')}:${configService.get<string>('ORDER_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const orderGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'ORDER_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: ORDER_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/order/order.proto'),
+      url: `${configService.get<string>('ORDER_SERVICE_HOST')}:${configService.get<string>('ORDER_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const orderItemGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'ORDER_ITEM_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: ORDER_ITEM_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/order/order-item.proto'),
+      url: `${configService.get<string>('ORDER_SERVICE_HOST')}:${configService.get<string>('ORDER_SERVICE_PORT')}`,
     },
   }),
   inject: [ConfigService],

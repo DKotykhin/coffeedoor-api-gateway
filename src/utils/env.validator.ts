@@ -27,6 +27,12 @@ class EnvironmentVariables {
   USER_SERVICE_PORT: string;
 
   @IsNotEmpty()
+  ORDER_SERVICE_HOST: string;
+
+  @IsNotEmpty()
+  ORDER_SERVICE_PORT: string;
+
+  @IsNotEmpty()
   JWT_SECRET_KEY: string;
 }
 

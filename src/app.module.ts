@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { StoreCategoryModule } from './store-category/store-category.module';
 import { StoreItemModule } from './store-item/store-item.module';
+import { OrderItemModule } from './order-item/order-item.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -17,13 +19,15 @@ import { StoreItemModule } from './store-item/store-item.module';
       envFilePath: ['.env.stage.dev'],
       validate,
     }),
+    AuthModule,
+    HealthCheckModule,
     MenuCategoryModule,
     MenuItemModule,
-    HealthCheckModule,
-    UserModule,
-    AuthModule,
+    OrderItemModule,
+    OrderModule,
     StoreCategoryModule,
     StoreItemModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

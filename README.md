@@ -8,8 +8,8 @@ API Gateway backend for CoffeeDoor online shop
 
 ## Technologies
 
--   3 microservices: User, Menu and Store + API Gateway
--   NestJS, TypeORM, postgreSQL, Typescript, AWS S3, JWT, bcrypt, passport, sendGrid
+-   4 microservices: User, Menu, Order and Store + API Gateway
+-   NestJS, gRPC, TypeORM, postgreSQL, Typescript, AWS S3, JWT, bcrypt, passport, sendGrid, Swagger
 
 ## Features
 
@@ -30,7 +30,7 @@ To run this project locally, you will need to add the following environment vari
 
 ## API Endpoints
 
-To see API Endpoints you can run [Swagger](localhost:4004/swagger)
+To see API Endpoints you can run Swagger on [localhost:4004/swagger](localhost:4004/swagger)
 
 ## Installation
 

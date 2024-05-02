@@ -20,6 +20,10 @@ describe('HealthCheckService', () => {
           provide: 'STORE_HEALTH_CHECK_SERVICE',
           useValue: {},
         },
+        {
+          provide: 'ORDER_HEALTH_CHECK_SERVICE',
+          useValue: {},
+        },
       ],
     }).compile();
 
