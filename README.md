@@ -9,7 +9,7 @@ API Gateway backend for CoffeeDoor online shop
 ## Technologies
 
 -   4 microservices: User, Menu, Order and Store + API Gateway
--   NestJS, gRPC, TypeORM, postgreSQL, Typescript, AWS S3, JWT, bcrypt, passport, sendGrid, Swagger
+-   NestJS, gRPC, TypeORM, postgreSQL, Typescript, AWS S3, JWT, bcrypt, passport, sendGrid, Swagger, class-validator
 
 ## Features
 
@@ -21,8 +21,11 @@ API Gateway backend for CoffeeDoor online shop
 -   email confirmation for registration
 -   get store item with other items random recommendation
 -   change position for menu and store items
--   upload and delete user avatar
+-   upload and delete user avatar with AWS S3
+-   upload and delete store images with AWS S3
 -   user orders with telegram channel notification
+-   input validation
+-   Swagger documentation
 
 ## Environment Variables
 

@@ -20,3 +20,4 @@ EXPOSE 4004
 CMD [ "npm", "start" ]
 
 # npm config set registry https://registry.npmjs.org/
+# npm config set strict-ssl false
