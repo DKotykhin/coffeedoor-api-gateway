@@ -17,7 +17,7 @@ import {
 } from './dto/_index';
 import {
   MENU_CATEGORY_SERVICE_NAME,
-  MenuCategories,
+  MenuCategoryList,
   MenuCategory,
   MenuCategoryServiceClient,
   StatusResponse,
@@ -38,7 +38,7 @@ export class MenuCategoryService implements OnModuleInit {
     );
   }
 
-  async findByLanguage(language: LanguageCode): Promise<MenuCategories> {
+  async findByLanguage(language: LanguageCode): Promise<MenuCategoryList> {
     try {
       return await firstValueFrom(
         this.menuCategoryService.getMenuCategoriesByLanguage({
@@ -54,7 +54,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async findAll(): Promise<MenuCategories> {
+  async findAll(): Promise<MenuCategoryList> {
     try {
       return await firstValueFrom(
         this.menuCategoryService.getAllMenuCategories({}),

@@ -23,7 +23,7 @@ import {
   UpdateMenuCategoryDto,
 } from './dto/_index';
 import {
-  MenuCategories,
+  MenuCategoryList,
   MenuCategory,
   StatusResponse,
 } from './menu-category.pb';
@@ -36,7 +36,7 @@ export class MenuController {
   @Get()
   findByLanguage(
     @Query('language') language: LanguageCode,
-  ): Promise<MenuCategories> {
+  ): Promise<MenuCategoryList> {
     return this.menuCategoryService.findByLanguage(language);
   }
 }
@@ -50,7 +50,7 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  findAll(): Promise<MenuCategories> {
+  findAll(): Promise<MenuCategoryList> {
     return this.menuCategoryService.findAll();
   }
 

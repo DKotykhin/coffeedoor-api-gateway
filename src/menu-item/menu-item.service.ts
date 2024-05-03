@@ -9,17 +9,13 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 import { errorCodeImplementation } from '../utils/error-code-implementation';
-import {
-  ChangeMenuItemPositionDto,
-  CreateMenuItemDto,
-  UpdateMenuItemDto,
-} from './dto/_index';
+import { ChangeMenuItemPositionDto, UpdateMenuItemDto } from './dto/_index';
 import {
   CreateMenuItemRequest,
   MENU_ITEM_SERVICE_NAME,
   MenuItem,
   MenuItemServiceClient,
-  MenuItems,
+  MenuItemList,
   StatusResponse,
 } from './menu-item.pb';
 
@@ -37,10 +33,10 @@ export class MenuItemService implements OnModuleInit {
     );
   }
 
-  async findAllByCategoryId(categoryId: string): Promise<MenuItems> {
+  async findAllByCategoryId(id: string): Promise<MenuItemList> {
     try {
       return await firstValueFrom(
-        this.menuItemService.getMenuItemsByCategoryId({ categoryId }),
+        this.menuItemService.getMenuItemsByCategoryId({ id }),
       );
     } catch (error) {
       this.logger.error(error?.details);
@@ -63,12 +59,10 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async create(createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
+  async create(createMenuItemDto: CreateMenuItemRequest): Promise<MenuItem> {
     try {
       return await firstValueFrom(
-        this.menuItemService.createMenuItem(
-          createMenuItemDto as unknown as CreateMenuItemRequest,
-        ),
+        this.menuItemService.createMenuItem(createMenuItemDto),
       );
     } catch (error) {
       this.logger.error(error?.details);

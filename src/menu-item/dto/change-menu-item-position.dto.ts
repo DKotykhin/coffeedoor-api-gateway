@@ -5,7 +5,7 @@ export class ChangeMenuItemPositionDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsUUID()
-  menuItemId: string;
+  id: string;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -22,7 +22,7 @@ import {
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItemService } from './menu-item.service';
-import { MenuItem, MenuItems, StatusResponse } from './menu-item.pb';
+import { MenuItem, MenuItemList, StatusResponse } from './menu-item.pb';
 
 @ApiTags('menu-items')
 @ApiBearerAuth()
@@ -35,7 +35,7 @@ export class MenuItemController {
   @Get()
   findAllByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Promise<MenuItems> {
+  ): Promise<MenuItemList> {
     return this.menuItemService.findAllByCategoryId(categoryId);
   }
 

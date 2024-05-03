@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -25,6 +26,7 @@ import {
   StoreItemWithAd,
 } from './store-item.pb';
 
+@ApiTags('store-item')
 @Controller('store-item-with-recommendations')
 export class StoreItemWithRecommendationsController {
   constructor(private readonly storeItemService: StoreItemService) {}
@@ -37,6 +39,8 @@ export class StoreItemWithRecommendationsController {
   }
 }
 
+@ApiTags('store-item')
+@ApiBearerAuth()
 @Controller('store-items')
 @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
 @UseGuards(AuthGuard('jwt'), RolesGuard)

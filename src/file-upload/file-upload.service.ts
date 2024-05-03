@@ -72,7 +72,7 @@ export class FileUploadService {
       const buffer = crypto.randomBytes(2);
       const token = buffer.toString('hex');
       const fileName = slug + '-' + token + '.webp';
-      const avatarPath = `store/${fileName}`;
+      const storePath = `store/${fileName}`;
 
       const fileBuffer = await sharp(image.buffer)
         .webp()
@@ -81,7 +81,7 @@ export class FileUploadService {
 
       const params = {
         Bucket: this.configService.get('AWS_BUCKET_NAME'),
-        Key: avatarPath,
+        Key: storePath,
         Body: fileBuffer,
         ContentType: 'image/webp',
       };
@@ -89,7 +89,7 @@ export class FileUploadService {
 
       await this.s3.send(command);
 
-      return fileName;
+      return storePath;
     } catch (err) {
       this.logger.error(err.message);
       throw new HttpException(

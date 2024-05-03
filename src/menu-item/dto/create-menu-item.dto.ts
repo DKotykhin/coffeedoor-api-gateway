@@ -1,15 +1,28 @@
 import {
   IsBoolean,
+  IsDefined,
   IsEnum,
   IsNotEmpty,
+  IsNotEmptyObject,
   IsNumber,
+  IsObject,
   IsOptional,
   IsString,
+  IsUUID,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { LanguageCode } from '../../types/enums';
 
+class MenuCategory {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @IsUUID()
+  id: string;
+}
 export class CreateMenuItemDto {
   @ApiProperty({
     enum: LanguageCode,
@@ -43,7 +56,10 @@ export class CreateMenuItemDto {
   position: number;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  categoryId: string;
+  @IsDefined()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type(() => MenuCategory)
+  menuCategory: MenuCategory;
 }

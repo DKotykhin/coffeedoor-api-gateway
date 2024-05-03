@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { StoreCategoryService } from '../store-category.service';
+import { FileUploadService } from '../../file-upload/file-upload.service';
 
 describe('StoreCategoryService', () => {
   let service: StoreCategoryService;
@@ -10,6 +12,10 @@ describe('StoreCategoryService', () => {
         StoreCategoryService,
         {
           provide: 'STORE_CATEGORY_SERVICE',
+          useValue: {},
+        },
+        {
+          provide: FileUploadService,
           useValue: {},
         },
       ],

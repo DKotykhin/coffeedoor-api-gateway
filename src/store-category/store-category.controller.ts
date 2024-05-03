@@ -12,6 +12,7 @@ import {
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { LanguageCode, RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
@@ -26,6 +27,7 @@ import {
   StoreCategoryList,
 } from './store-category.pb';
 
+@ApiTags('store-categories')
 @Controller('all-store')
 @UseInterceptors(ClassSerializerInterceptor)
 export class StoreController {
@@ -39,6 +41,8 @@ export class StoreController {
   }
 }
 
+@ApiTags('store-categories')
+@ApiBearerAuth()
 @Controller('store-categories')
 @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
 @UseGuards(AuthGuard('jwt'), RolesGuard)
