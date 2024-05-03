@@ -12,6 +12,7 @@ import { StoreItemModule } from './store-item/store-item.module';
 import { OrderItemModule } from './order-item/order-item.module';
 import { OrderModule } from './order/order.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { StoreItemImageModule } from './store-item-image/store-item-image.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { FileUploadModule } from './file-upload/file-upload.module';
     StoreItemModule,
     UserModule,
     FileUploadModule,
+    StoreItemImageModule,
   ],
   controllers: [],
   providers: [],

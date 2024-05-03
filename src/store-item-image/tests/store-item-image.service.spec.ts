@@ -1,32 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { JwtService } from '@nestjs/jwt';
 
-import { AuthService } from '../auth.service';
+import { StoreItemImageService } from '../store-item-image.service';
 import { FileUploadService } from '../../file-upload/file-upload.service';
 
-describe('AuthService', () => {
-  let service: AuthService;
+describe('StoreItemImageService', () => {
+  let service: StoreItemImageService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AuthService,
-        {
-          provide: 'AUTH_SERVICE',
-          useValue: {},
-        },
-        {
-          provide: JwtService,
-          useValue: {},
-        },
+        StoreItemImageService,
         {
           provide: FileUploadService,
+          useValue: {},
+        },
+        {
+          provide: 'STORE_ITEM_IMAGE_SERVICE',
           useValue: {},
         },
       ],
     }).compile();
 
-    service = module.get<AuthService>(AuthService);
+    service = module.get<StoreItemImageService>(StoreItemImageService);
   });
 
   it('should be defined', () => {

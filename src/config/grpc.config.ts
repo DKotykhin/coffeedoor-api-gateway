@@ -11,6 +11,7 @@ import { STORE_CATEGORY_PACKAGE_NAME } from '../store-category/store-category.pb
 import { STORE_ITEM_PACKAGE_NAME } from '../store-item/store-item.pb';
 import { ORDER_PACKAGE_NAME } from '../order/order.pb';
 import { ORDER_ITEM_PACKAGE_NAME } from '../order-item/order-item.pb';
+import { STORE_ITEM_IMAGE_PACKAGE_NAME } from '../store-item-image/store-item-image.pb';
 
 export const menuCategoryGrpcConfig: ClientsProviderAsyncOptions = {
   name: 'MENU_CATEGORY_SERVICE',
@@ -123,6 +124,19 @@ export const storeItemGrpcConfig: ClientsProviderAsyncOptions = {
     options: {
       package: STORE_ITEM_PACKAGE_NAME,
       protoPath: join(__dirname, '../../proto/store/store-item.proto'),
+      url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
+
+export const storeItemImageGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'STORE_ITEM_IMAGE_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: STORE_ITEM_IMAGE_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/store/store-item-image.proto'),
       url: `${configService.get<string>('STORE_SERVICE_HOST')}:${configService.get<string>('STORE_SERVICE_PORT')}`,
     },
   }),
