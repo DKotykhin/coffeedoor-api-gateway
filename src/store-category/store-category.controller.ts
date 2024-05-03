@@ -34,7 +34,7 @@ export class StoreController {
   @Get()
   findByLanguage(
     @Query('language') language: LanguageCode,
-  ): Promise<StoreCategoryList> {
+  ): Promise<StoreCategory[]> {
     return this.storeCategoryService.findByLanguage(language);
   }
 }

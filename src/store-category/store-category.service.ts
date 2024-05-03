@@ -19,6 +19,9 @@ import {
   StoreCategoryServiceClient,
 } from './store-category.pb';
 import { UpdateMenuCategoryRequest } from '../menu-category/menu-category.pb';
+import { StoreItemWithImageUrl } from '../store-item/dto/store-item-with-imageUrl.dto';
+import { StoreItemImage } from '../store-item-image/store-item-image.pb';
+import { FileUploadService } from '../file-upload/file-upload.service';
 
 @Injectable()
 export class StoreCategoryService implements OnModuleInit {
@@ -27,6 +30,7 @@ export class StoreCategoryService implements OnModuleInit {
   constructor(
     @Inject('STORE_CATEGORY_SERVICE')
     private readonly storeCategoryServiceClient: ClientGrpc,
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
   onModuleInit() {
@@ -35,13 +39,30 @@ export class StoreCategoryService implements OnModuleInit {
     );
   }
 
-  async findByLanguage(language: LanguageCode): Promise<StoreCategoryList> {
+  async findByLanguage(language: LanguageCode): Promise<StoreCategory[]> {
     try {
-      return await firstValueFrom(
+      const { storeCategoryList } = await firstValueFrom(
         this.storeCategoryService.getStoreCategoriesByLanguage({
           language,
         }),
       );
+      await Promise.all(
+        storeCategoryList.map(async (category: StoreCategory) => {
+          if (!category.storeItems) return category;
+          category.storeItems = await Promise.all(
+            category.storeItems.map(async (item: StoreItemWithImageUrl) => {
+              if (!item.images) return item;
+              item.imageUrl = await Promise.all(
+                item.images.map(async (image: StoreItemImage) => {
+                  return await this.fileUploadService.getImageUrl(image?.image);
+                }),
+              );
+              return item;
+            }),
+          );
+        }),
+      );
+      return storeCategoryList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(
