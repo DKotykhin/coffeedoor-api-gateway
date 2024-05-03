@@ -19,6 +19,7 @@ import {
 } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
 import { JwtPayload } from './dto/jwtPayload.dto';
+import { FileUploadService } from '../file-upload/file-upload.service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -27,11 +28,21 @@ export class AuthService implements OnModuleInit {
   constructor(
     @Inject('AUTH_SERVICE') private readonly authServiceClient: ClientGrpc,
     private readonly jwtService: JwtService,
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
   onModuleInit() {
     this.authService =
       this.authServiceClient.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
+  }
+
+  async getUserByToken(user: Partial<User>): Promise<Partial<User>> {
+    if (user.avatar) {
+      user.avatar = await this.fileUploadService.getImageUrl(
+        'avatar/' + user.avatar,
+      );
+    }
+    return user;
   }
 
   async signUp(signUpDto: SignUpDto): Promise<Partial<User>> {

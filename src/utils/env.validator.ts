@@ -33,6 +33,18 @@ class EnvironmentVariables {
   ORDER_SERVICE_PORT: string;
 
   @IsNotEmpty()
+  AWS_ACCESS_KEY_ID: string;
+
+  @IsNotEmpty()
+  AWS_SECRET_ACCESS_KEY: string;
+
+  @IsNotEmpty()
+  AWS_REGION: string;
+
+  @IsNotEmpty()
+  AWS_BUCKET_NAME: string;
+
+  @IsNotEmpty()
   JWT_SECRET_KEY: string;
 }
 

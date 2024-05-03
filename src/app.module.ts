@@ -11,6 +11,7 @@ import { StoreCategoryModule } from './store-category/store-category.module';
 import { StoreItemModule } from './store-item/store-item.module';
 import { OrderItemModule } from './order-item/order-item.module';
 import { OrderModule } from './order/order.module';
+import { FileUploadModule } from './file-upload/file-upload.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { OrderModule } from './order/order.module';
     StoreCategoryModule,
     StoreItemModule,
     UserModule,
+    FileUploadModule,
   ],
   controllers: [],
   providers: [],

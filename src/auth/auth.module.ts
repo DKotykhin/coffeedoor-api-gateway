@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { authGrpcConfig, userGrpcConfig } from '../config/grpc.config';
 import { UserService } from '../user/user.service';
 import { jwtTokenConfig } from '../config/jwt-token.config';
+import { FileUploadService } from '../file-upload/file-upload.service';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
@@ -23,7 +24,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JwtStrategy],
+  providers: [AuthService, UserService, JwtStrategy, FileUploadService],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

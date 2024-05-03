@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { UserService } from '../user.service';
+import { FileUploadService } from '../../file-upload/file-upload.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -10,6 +12,10 @@ describe('UserService', () => {
         UserService,
         {
           provide: 'USER_SERVICE',
+          useValue: {},
+        },
+        {
+          provide: FileUploadService,
           useValue: {},
         },
       ],

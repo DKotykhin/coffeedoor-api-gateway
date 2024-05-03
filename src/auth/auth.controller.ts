@@ -24,8 +24,8 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Get('/user')
-  getUserByToken(@GetUser() user: Partial<User>): Partial<User> {
-    return user;
+  getUserByToken(@GetUser() user: Partial<User>): Promise<Partial<User>> {
+    return this.authService.getUserByToken(user);
   }
 
   @Post('/sign-up')

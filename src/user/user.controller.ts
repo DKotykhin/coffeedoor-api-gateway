@@ -5,10 +5,18 @@ import {
   Get,
   Patch,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+} from '@nestjs/common/pipes';
 
 import { EmailDto, PasswordDto } from '../auth/dto/auth.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
@@ -60,5 +68,29 @@ export class UserController {
     @GetUser() user: User,
   ): Promise<StatusResponse> {
     return this.userService.changePassword(user.id, passwordDto.password);
+  }
+
+  @Post('avatar')
+  @UseInterceptors(FileInterceptor('avatar'))
+  uploadFile(
+    @GetUser() user: User,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({
+            fileType: 'image/jpeg' || 'image/png' || 'image/webp',
+          }),
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 3 }),
+        ],
+      }),
+    )
+    avatar: Express.Multer.File,
+  ): Promise<StatusResponse> {
+    return this.userService.uploadAvatar(user.id, avatar);
+  }
+
+  @Delete('avatar')
+  deleteAvatar(@GetUser() user: User): Promise<StatusResponse> {
+    return this.userService.deleteAvatar(user.id);
   }
 }
