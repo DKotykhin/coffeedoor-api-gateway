@@ -15,7 +15,6 @@ import {
   MENU_ITEM_SERVICE_NAME,
   MenuItem,
   MenuItemServiceClient,
-  MenuItemList,
   StatusResponse,
 } from './menu-item.pb';
 
@@ -33,11 +32,12 @@ export class MenuItemService implements OnModuleInit {
     );
   }
 
-  async findAllByCategoryId(id: string): Promise<MenuItemList> {
+  async findAllByCategoryId(id: string): Promise<MenuItem[]> {
     try {
-      return await firstValueFrom(
+      const { menuItemList } = await firstValueFrom(
         this.menuItemService.getMenuItemsByCategoryId({ id }),
       );
+      return menuItemList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(

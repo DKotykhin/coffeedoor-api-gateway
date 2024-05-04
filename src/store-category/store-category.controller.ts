@@ -6,15 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
   UseGuards,
-  UseInterceptors,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
-import { LanguageCode, RoleTypes } from '../types/enums';
+import { RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 
@@ -26,20 +23,6 @@ import {
   StoreCategory,
   StoreCategoryList,
 } from './store-category.pb';
-
-@ApiTags('store-categories')
-@Controller('all-store')
-@UseInterceptors(ClassSerializerInterceptor)
-export class StoreController {
-  constructor(private readonly storeCategoryService: StoreCategoryService) {}
-
-  @Get()
-  findByLanguage(
-    @Query('language') language: LanguageCode,
-  ): Promise<StoreCategory[]> {
-    return this.storeCategoryService.findByLanguage(language);
-  }
-}
 
 @ApiTags('store-categories')
 @ApiBearerAuth()

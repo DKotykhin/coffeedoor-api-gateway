@@ -3,14 +3,12 @@ import { ClientsModule } from '@nestjs/microservices';
 
 import { menuCategoryGrpcConfig } from '../config/grpc.config';
 import { MenuCategoryService } from './menu-category.service';
-import {
-  MenuController,
-  MenuCategoryController,
-} from './menu-category.controller';
+import { MenuCategoryController } from './menu-category.controller';
+import { AllMenuController } from './all-menu.controller';
 
 @Module({
   imports: [ClientsModule.registerAsync([menuCategoryGrpcConfig])],
-  controllers: [MenuController, MenuCategoryController],
+  controllers: [AllMenuController, MenuCategoryController],
   providers: [MenuCategoryService],
 })
 export class MenuCategoryModule {}

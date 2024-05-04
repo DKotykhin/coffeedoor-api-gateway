@@ -20,7 +20,6 @@ import { RoleTypes } from '../types/enums';
 import {
   CreateOrderRequest,
   Order,
-  OrderList,
   StatusResponse,
   UpdateOrderRequest,
 } from './order.pb';
@@ -33,7 +32,7 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('user')
-  getOrdersByUserId(@GetUser() user: User): Promise<OrderList> {
+  getOrdersByUserId(@GetUser() user: User): Promise<Order[]> {
     return this.orderService.findOrdersByUserId(user.id);
   }
 

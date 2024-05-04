@@ -8,11 +8,15 @@ import {
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
-import {
-  ORDER_ITEM_SERVICE_NAME,
-  OrderItemServiceClient,
-} from './order-item.pb';
 import { errorCodeImplementation } from '../utils/error-code-implementation';
+import {
+  CreateOrderItemRequest,
+  ORDER_ITEM_SERVICE_NAME,
+  OrderItem,
+  OrderItemServiceClient,
+  StatusResponse,
+  UpdateOrderItemRequest,
+} from './order-item.pb';
 
 @Injectable()
 export class OrderItemService implements OnModuleInit {
@@ -29,7 +33,7 @@ export class OrderItemService implements OnModuleInit {
     );
   }
 
-  async findOrderItemById(id: string) {
+  async findOrderItemById(id: string): Promise<OrderItem> {
     try {
       const response = await firstValueFrom(
         this.orderItemService.getOrderItemById({ id }),
@@ -44,12 +48,12 @@ export class OrderItemService implements OnModuleInit {
     }
   }
 
-  async findOrderItemsByOrderId(orderId: string) {
+  async findOrderItemsByOrderId(orderId: string): Promise<OrderItem[]> {
     try {
-      const response = await firstValueFrom(
+      const { orderItemList } = await firstValueFrom(
         this.orderItemService.getOrderItemsByOrderId({ id: orderId }),
       );
-      return response;
+      return orderItemList;
     } catch (error) {
       this.logger.error(error.details);
       throw new HttpException(
@@ -59,7 +63,7 @@ export class OrderItemService implements OnModuleInit {
     }
   }
 
-  async createOrderItem(orderItem: any) {
+  async createOrderItem(orderItem: CreateOrderItemRequest): Promise<OrderItem> {
     try {
       const response = await firstValueFrom(
         this.orderItemService.createOrderItem(orderItem),
@@ -74,7 +78,7 @@ export class OrderItemService implements OnModuleInit {
     }
   }
 
-  async updateOrderItem(orderItem: any) {
+  async updateOrderItem(orderItem: UpdateOrderItemRequest): Promise<OrderItem> {
     try {
       const response = await firstValueFrom(
         this.orderItemService.updateOrderItem(orderItem),
@@ -89,7 +93,7 @@ export class OrderItemService implements OnModuleInit {
     }
   }
 
-  async deleteOrderItem(id: string) {
+  async deleteOrderItem(id: string): Promise<StatusResponse> {
     try {
       const response = await firstValueFrom(
         this.orderItemService.deleteOrderItem({ id }),

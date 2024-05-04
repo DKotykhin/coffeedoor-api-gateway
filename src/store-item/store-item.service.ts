@@ -14,7 +14,6 @@ import {
   STORE_ITEM_SERVICE_NAME,
   StatusResponse,
   StoreItem,
-  StoreItemList,
   StoreItemServiceClient,
   StoreItemWithAd,
   UpdateStoreItemRequest,
@@ -35,11 +34,12 @@ export class StoreItemService implements OnModuleInit {
     );
   }
 
-  async findByCategoryId(id: string): Promise<StoreItemList> {
+  async findByCategoryId(id: string): Promise<StoreItem[]> {
     try {
-      return await firstValueFrom(
+      const { storeItemList } = await firstValueFrom(
         this.storeItemService.getStoreItemsByCategoryId({ id }),
       );
+      return storeItemList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(

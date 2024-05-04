@@ -18,7 +18,6 @@ import { OrderItemService } from './order-item.service';
 import {
   CreateOrderItemRequest,
   OrderItem,
-  OrderItemList,
   StatusResponse,
 } from './order-item.pb';
 
@@ -38,7 +37,7 @@ export class OrderItemController {
   @Get('order/:orderId')
   getOrderItemsByOrderId(
     @Param('orderId') orderId: string,
-  ): Promise<OrderItemList> {
+  ): Promise<OrderItem[]> {
     return this.orderItemService.findOrderItemsByOrderId(orderId);
   }
 

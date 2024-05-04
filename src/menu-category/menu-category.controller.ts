@@ -6,12 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-import { LanguageCode, RoleTypes } from '../types/enums';
+import { RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -22,24 +21,7 @@ import {
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
-import {
-  MenuCategoryList,
-  MenuCategory,
-  StatusResponse,
-} from './menu-category.pb';
-
-@ApiTags('menu')
-@Controller('menu')
-export class MenuController {
-  constructor(private readonly menuCategoryService: MenuCategoryService) {}
-
-  @Get()
-  findByLanguage(
-    @Query('language') language: LanguageCode,
-  ): Promise<MenuCategoryList> {
-    return this.menuCategoryService.findByLanguage(language);
-  }
-}
+import { MenuCategory, StatusResponse } from './menu-category.pb';
 
 @ApiTags('menu-categories')
 @ApiBearerAuth()
@@ -50,7 +32,7 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  findAll(): Promise<MenuCategoryList> {
+  findAll(): Promise<MenuCategory[]> {
     return this.menuCategoryService.findAll();
   }
 

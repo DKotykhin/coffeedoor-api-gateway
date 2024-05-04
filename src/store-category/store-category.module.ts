@@ -5,14 +5,12 @@ import { storeCategoryGrpcConfig } from '../config/grpc.config';
 import { FileUploadService } from '../file-upload/file-upload.service';
 
 import { StoreCategoryService } from './store-category.service';
-import {
-  StoreCategoryController,
-  StoreController,
-} from './store-category.controller';
+import { StoreCategoryController } from './store-category.controller';
+import { AllStoreController } from './all-store.controller';
 
 @Module({
   imports: [ClientsModule.registerAsync([storeCategoryGrpcConfig])],
-  controllers: [StoreCategoryController, StoreController],
+  controllers: [StoreCategoryController, AllStoreController],
   providers: [StoreCategoryService, FileUploadService],
 })
 export class StoreCategoryModule {}

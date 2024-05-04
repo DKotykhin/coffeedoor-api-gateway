@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { StoreCategoryController } from '../store-category.controller';
 import { StoreCategoryService } from '../store-category.service';
+import { AllStoreController } from '../all-store.controller';
 
 describe('StoreCategoryController', () => {
-  let controller: StoreCategoryController;
+  let controller: AllStoreController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [StoreCategoryController],
+      controllers: [AllStoreController],
       providers: [StoreCategoryService],
     })
       .overrideProvider(StoreCategoryService)
       .useValue({})
       .compile();
 
-    controller = module.get<StoreCategoryController>(StoreCategoryController);
+    controller = module.get<AllStoreController>(AllStoreController);
   });
 
   it('should be defined', () => {

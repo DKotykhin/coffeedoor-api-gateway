@@ -19,12 +19,7 @@ import { RoleTypes } from '../types/enums';
 import { StoreItemService } from './store-item.service';
 import { CreateStoreItemDto } from './dto/create-store-item.dto';
 import { UpdateStoreItemDto } from './dto/update-store-item.dto';
-import {
-  StatusResponse,
-  StoreItem,
-  StoreItemList,
-  StoreItemWithAd,
-} from './store-item.pb';
+import { StatusResponse, StoreItem, StoreItemWithAd } from './store-item.pb';
 
 @ApiTags('store-item')
 @Controller('store-item-with-recommendations')
@@ -50,7 +45,7 @@ export class StoreItemController {
   @Get()
   findAllByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Promise<StoreItemList> {
+  ): Promise<StoreItem[]> {
     return this.storeItemService.findByCategoryId(categoryId);
   }
 

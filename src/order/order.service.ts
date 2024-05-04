@@ -13,7 +13,6 @@ import {
   CreateOrderRequest,
   ORDER_SERVICE_NAME,
   Order,
-  OrderList,
   OrderServiceClient,
   StatusResponse,
   UpdateOrderRequest,
@@ -47,12 +46,12 @@ export class OrderService implements OnModuleInit {
     }
   }
 
-  async findOrdersByUserId(userId: string): Promise<OrderList> {
+  async findOrdersByUserId(userId: string): Promise<Order[]> {
     try {
-      const response = await firstValueFrom(
+      const { orderList } = await firstValueFrom(
         this.orderService.getOrdersByUserId({ id: userId }),
       );
-      return response;
+      return orderList;
     } catch (error) {
       this.logger.error(error.details);
       throw new HttpException(

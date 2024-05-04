@@ -17,7 +17,6 @@ import {
 } from './dto/_index';
 import {
   MENU_CATEGORY_SERVICE_NAME,
-  MenuCategoryList,
   MenuCategory,
   MenuCategoryServiceClient,
   StatusResponse,
@@ -38,13 +37,14 @@ export class MenuCategoryService implements OnModuleInit {
     );
   }
 
-  async findByLanguage(language: LanguageCode): Promise<MenuCategoryList> {
+  async findByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
     try {
-      return await firstValueFrom(
+      const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getMenuCategoriesByLanguage({
           language,
         }),
       );
+      return menuCategoryList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(
@@ -54,11 +54,12 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async findAll(): Promise<MenuCategoryList> {
+  async findAll(): Promise<MenuCategory[]> {
     try {
-      return await firstValueFrom(
+      const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getAllMenuCategories({}),
       );
+      return menuCategoryList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(
