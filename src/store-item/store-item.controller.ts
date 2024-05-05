@@ -19,20 +19,7 @@ import { RoleTypes } from '../types/enums';
 import { StoreItemService } from './store-item.service';
 import { CreateStoreItemDto } from './dto/create-store-item.dto';
 import { UpdateStoreItemDto } from './dto/update-store-item.dto';
-import { StatusResponse, StoreItem, StoreItemWithAd } from './store-item.pb';
-
-@ApiTags('store-item')
-@Controller('store-item-with-recommendations')
-export class StoreItemWithRecommendationsController {
-  constructor(private readonly storeItemService: StoreItemService) {}
-
-  @Get(':slug')
-  findBySlugWithRecommendations(
-    @Param('slug') slug: string,
-  ): Promise<StoreItemWithAd> {
-    return this.storeItemService.findBySlugWithAd(slug);
-  }
-}
+import { StatusResponse, StoreItem } from './store-item.pb';
 
 @ApiTags('store-item')
 @ApiBearerAuth()

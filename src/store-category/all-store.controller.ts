@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  Query,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-} from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { LanguageCode } from '../types/enums';
@@ -14,7 +8,6 @@ import { StoreCategory } from './store-category.pb';
 
 @ApiTags('all-store')
 @Controller('all-store')
-@UseInterceptors(ClassSerializerInterceptor)
 export class AllStoreController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 
