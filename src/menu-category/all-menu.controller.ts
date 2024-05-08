@@ -1,8 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
-
-import { LanguageCode } from '../types/enums';
 import { ApiTags } from '@nestjs/swagger';
 
+import { LanguageCode } from '../types/enums';
 import { MenuCategoryService } from './menu-category.service';
 import { MenuCategory } from './menu-category.pb';
 
