@@ -10,7 +10,9 @@ export class StoreItemWithAdController {
   constructor(private readonly storeItemService: StoreItemService) {}
 
   @Get(':slug')
-  findBySlugWithAd(@Param('slug') slug: string): Promise<StoreItemWithAd> {
-    return this.storeItemService.findBySlugWithAd(slug);
+  getStoreItemBySlugWithAd(
+    @Param('slug') slug: string,
+  ): Promise<StoreItemWithAd> {
+    return this.storeItemService.getStoreItemBySlugWithAd(slug);
   }
 }

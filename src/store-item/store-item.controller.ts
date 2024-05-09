@@ -30,32 +30,37 @@ export class StoreItemController {
   constructor(private readonly storeItemService: StoreItemService) {}
 
   @Get()
-  findAllByCategoryId(
+  findStoreItemsByCategoryId(
     @Query('categoryId') categoryId: string,
   ): Promise<StoreItem[]> {
-    return this.storeItemService.findByCategoryId(categoryId);
+    return this.storeItemService.findStoreItemsByCategoryId(categoryId);
   }
 
   @Get(':slug')
-  findById(@Param('slug') slug: string): Promise<StoreItem> {
-    return this.storeItemService.findBySlug(slug);
+  getStoreItemBySlug(@Param('slug') slug: string): Promise<StoreItem> {
+    return this.storeItemService.getStoreItemBySlug(slug);
   }
 
   @Post()
-  create(@Body() createStoreItemDto: CreateStoreItemDto): Promise<StoreItem> {
-    return this.storeItemService.create(createStoreItemDto);
+  createStoreItem(
+    @Body() createStoreItemDto: CreateStoreItemDto,
+  ): Promise<StoreItem> {
+    return this.storeItemService.createStoreItem(createStoreItemDto);
   }
 
   @Patch(':slug')
-  update(
+  updateStoreItem(
     @Param('slug') slug: string,
     @Body() updateStoreItemDto: UpdateStoreItemDto,
   ): Promise<StoreItem> {
-    return this.storeItemService.update({ slug, ...updateStoreItemDto });
+    return this.storeItemService.updateStoreItem({
+      slug,
+      ...updateStoreItemDto,
+    });
   }
 
   @Delete(':slug')
-  remove(@Param('slug') slug: string): Promise<StatusResponse> {
-    return this.storeItemService.delete(slug);
+  deleteStoreItem(@Param('slug') slug: string): Promise<StatusResponse> {
+    return this.storeItemService.deleteStoreItem(slug);
   }
 }

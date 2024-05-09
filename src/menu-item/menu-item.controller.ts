@@ -33,39 +33,43 @@ export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
 
   @Get()
-  findAllByCategoryId(
+  findMenuItemsByCategoryId(
     @Query('categoryId') categoryId: string,
   ): Promise<MenuItem[]> {
-    return this.menuItemService.findAllByCategoryId(categoryId);
+    return this.menuItemService.findMenuItemsByCategoryId(categoryId);
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<MenuItem> {
-    return this.menuItemService.findById(id);
+  findMenuItemById(@Param('id') id: string): Promise<MenuItem> {
+    return this.menuItemService.findMenuItemById(id);
   }
 
   @Post()
-  create(@Body() createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
-    return this.menuItemService.create(createMenuItemDto);
+  createMenuItem(
+    @Body() createMenuItemDto: CreateMenuItemDto,
+  ): Promise<MenuItem> {
+    return this.menuItemService.createMenuItem(createMenuItemDto);
   }
 
   @Patch('update/:id')
-  update(
+  updateMenuItem(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
   ): Promise<MenuItem> {
-    return this.menuItemService.update(id, updateMenuItemDto);
+    return this.menuItemService.updateMenuItem(id, updateMenuItemDto);
   }
 
   @Patch('change-position')
-  changePosition(
+  changeMenuItemPosition(
     @Body() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
   ): Promise<MenuItem> {
-    return this.menuItemService.changePosition(changeMenuItemPositionDto);
+    return this.menuItemService.changeMenuItemPosition(
+      changeMenuItemPositionDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<StatusResponse> {
-    return this.menuItemService.remove(id);
+  deleteMenuItem(@Param('id') id: string): Promise<StatusResponse> {
+    return this.menuItemService.deleteMenuItem(id);
   }
 }

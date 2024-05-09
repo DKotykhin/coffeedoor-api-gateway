@@ -15,7 +15,6 @@ import {
   STORE_CATEGORY_SERVICE_NAME,
   StatusResponse,
   StoreCategory,
-  StoreCategoryList,
   StoreCategoryServiceClient,
 } from './store-category.pb';
 import { UpdateMenuCategoryRequest } from '../menu-category/menu-category.pb';
@@ -39,7 +38,7 @@ export class StoreCategoryService implements OnModuleInit {
     );
   }
 
-  async findByLanguage(language: LanguageCode): Promise<StoreCategory[]> {
+  async findStoreByLanguage(language: LanguageCode): Promise<StoreCategory[]> {
     try {
       const { storeCategoryList } = await firstValueFrom(
         this.storeCategoryService.getStoreCategoriesByLanguage({
@@ -72,11 +71,12 @@ export class StoreCategoryService implements OnModuleInit {
     }
   }
 
-  async findAll(): Promise<StoreCategoryList> {
+  async getAllStore(): Promise<StoreCategory[]> {
     try {
-      return await firstValueFrom(
+      const { storeCategoryList } = await firstValueFrom(
         this.storeCategoryService.getAllStoreCategories({}),
       );
+      return storeCategoryList;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(
@@ -86,7 +86,7 @@ export class StoreCategoryService implements OnModuleInit {
     }
   }
 
-  async findById(id: string): Promise<StoreCategory> {
+  async getStoreCategoryById(id: string): Promise<StoreCategory> {
     try {
       return await firstValueFrom(
         this.storeCategoryService.getStoreCategoryById({ id }),
@@ -100,7 +100,7 @@ export class StoreCategoryService implements OnModuleInit {
     }
   }
 
-  async create(
+  async createStoreCategory(
     storeCategory: CreateStoreCategoryRequest,
   ): Promise<StoreCategory> {
     try {
@@ -116,7 +116,7 @@ export class StoreCategoryService implements OnModuleInit {
     }
   }
 
-  async update(
+  async updateStoreCategory(
     storeCategory: UpdateMenuCategoryRequest,
   ): Promise<StoreCategory> {
     try {
@@ -132,7 +132,7 @@ export class StoreCategoryService implements OnModuleInit {
     }
   }
 
-  async delete(id: string): Promise<StatusResponse> {
+  async deleteStoreCategory(id: string): Promise<StatusResponse> {
     try {
       return await firstValueFrom(
         this.storeCategoryService.deleteStoreCategory({ id }),

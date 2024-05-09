@@ -32,7 +32,7 @@ export class MenuItemService implements OnModuleInit {
     );
   }
 
-  async findAllByCategoryId(id: string): Promise<MenuItem[]> {
+  async findMenuItemsByCategoryId(id: string): Promise<MenuItem[]> {
     try {
       const { menuItemList } = await firstValueFrom(
         this.menuItemService.getMenuItemsByCategoryId({ id }),
@@ -47,7 +47,7 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async findById(id: string): Promise<MenuItem> {
+  async findMenuItemById(id: string): Promise<MenuItem> {
     try {
       return await firstValueFrom(this.menuItemService.getMenuItemById({ id }));
     } catch (error) {
@@ -59,7 +59,9 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async create(createMenuItemDto: CreateMenuItemRequest): Promise<MenuItem> {
+  async createMenuItem(
+    createMenuItemDto: CreateMenuItemRequest,
+  ): Promise<MenuItem> {
     try {
       return await firstValueFrom(
         this.menuItemService.createMenuItem(createMenuItemDto),
@@ -73,7 +75,7 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async update(
+  async updateMenuItem(
     id: string,
     updateMenuItemDto: UpdateMenuItemDto,
   ): Promise<MenuItem> {
@@ -93,7 +95,7 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async changePosition(
+  async changeMenuItemPosition(
     changeMenuItemPositionDto: ChangeMenuItemPositionDto,
   ): Promise<MenuItem> {
     try {
@@ -109,7 +111,7 @@ export class MenuItemService implements OnModuleInit {
     }
   }
 
-  async remove(id: string): Promise<StatusResponse> {
+  async deleteMenuItem(id: string): Promise<StatusResponse> {
     try {
       return await firstValueFrom(this.menuItemService.deleteMenuItem({ id }));
     } catch (error) {

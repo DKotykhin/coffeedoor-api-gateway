@@ -18,11 +18,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { StoreCategoryService } from './store-category.service';
 import { CreateStoreCategoryDto } from './dto/create-store-category.dto';
 import { UpdateStoreCategoryDto } from './dto/update-store-category.dto';
-import {
-  StatusResponse,
-  StoreCategory,
-  StoreCategoryList,
-} from './store-category.pb';
+import { StatusResponse, StoreCategory } from './store-category.pb';
 
 @ApiTags('store-categories')
 @ApiBearerAuth()
@@ -33,32 +29,35 @@ export class StoreCategoryController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 
   @Get()
-  findAll(): Promise<StoreCategoryList> {
-    return this.storeCategoryService.findAll();
+  getAllStore(): Promise<StoreCategory[]> {
+    return this.storeCategoryService.getAllStore();
   }
 
   @Get(':id')
-  findById(@Param('id') id: string): Promise<StoreCategory> {
-    return this.storeCategoryService.findById(id);
+  getStoreCategoryById(@Param('id') id: string): Promise<StoreCategory> {
+    return this.storeCategoryService.getStoreCategoryById(id);
   }
 
   @Post()
-  create(
+  createStoreCategory(
     @Body() createMenuCategoryDto: CreateStoreCategoryDto,
   ): Promise<StoreCategory> {
-    return this.storeCategoryService.create(createMenuCategoryDto);
+    return this.storeCategoryService.createStoreCategory(createMenuCategoryDto);
   }
 
   @Patch(':id')
-  update(
+  updateStoreCategory(
     @Param('id') id: string,
     @Body() updateMenuCategoryDto: UpdateStoreCategoryDto,
   ): Promise<StoreCategory> {
-    return this.storeCategoryService.update({ id, ...updateMenuCategoryDto });
+    return this.storeCategoryService.updateStoreCategory({
+      id,
+      ...updateMenuCategoryDto,
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<StatusResponse> {
-    return this.storeCategoryService.delete(id);
+  deleteStoreCategory(@Param('id') id: string): Promise<StatusResponse> {
+    return this.storeCategoryService.deleteStoreCategory(id);
   }
 }

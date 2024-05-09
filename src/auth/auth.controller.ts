@@ -59,7 +59,7 @@ export class AuthController {
   }
 
   @Post('new-password/:token')
-  newPassword(
+  setNewPassword(
     @Param('token') token: string,
     @Body() passwordDto: PasswordDto,
   ): Promise<StatusResponse> {

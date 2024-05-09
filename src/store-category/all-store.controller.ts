@@ -12,9 +12,9 @@ export class AllStoreController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 
   @Get()
-  findByLanguage(
+  findStoreByLanguage(
     @Query('language') language: LanguageCode,
   ): Promise<StoreCategory[]> {
-    return this.storeCategoryService.findByLanguage(language);
+    return this.storeCategoryService.findStoreByLanguage(language);
   }
 }

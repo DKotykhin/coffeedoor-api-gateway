@@ -11,9 +11,9 @@ export class AllMenuController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  findByLanguage(
+  getMenuByLanguage(
     @Query('language') language: LanguageCode,
   ): Promise<MenuCategory[]> {
-    return this.menuCategoryService.findByLanguage(language);
+    return this.menuCategoryService.getMenuByLanguage(language);
   }
 }

@@ -37,7 +37,7 @@ export class MenuCategoryService implements OnModuleInit {
     );
   }
 
-  async findByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
+  async getMenuByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
     try {
       const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getMenuCategoriesByLanguage({
@@ -54,7 +54,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async findAll(): Promise<MenuCategory[]> {
+  async getMenuCategories(): Promise<MenuCategory[]> {
     try {
       const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getAllMenuCategories({}),
@@ -69,7 +69,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async findById(id: string): Promise<MenuCategory> {
+  async getMenuCategoryById(id: string): Promise<MenuCategory> {
     try {
       return await firstValueFrom(
         this.menuCategoryService.getMenuCategoryById({ id }),
@@ -83,7 +83,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async create(
+  async createMenuCategory(
     createMenuCategoryDto: CreateMenuCategoryDto,
   ): Promise<MenuCategory> {
     try {
@@ -99,7 +99,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async update(
+  async updateMenuCategory(
     id: string,
     updateMenuCategoryDto: UpdateMenuCategoryDto,
   ): Promise<MenuCategory> {
@@ -119,7 +119,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async changePosition(
+  async changeMenuCategoryPosition(
     changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
   ): Promise<MenuCategory> {
     try {
@@ -137,7 +137,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async remove(id: string): Promise<StatusResponse> {
+  async deleteMenuCategory(id: string): Promise<StatusResponse> {
     try {
       return await firstValueFrom(
         this.menuCategoryService.deleteMenuCategory({ id }),
