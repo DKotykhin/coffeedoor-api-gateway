@@ -20,6 +20,7 @@ import { RoleTypes } from '../types/enums';
 import {
   CreateOrderRequest,
   Order,
+  OrderWithItems,
   StatusResponse,
   UpdateOrderRequest,
 } from './order.pb';
@@ -32,13 +33,13 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('user')
-  getOrdersByUserId(@GetUser() user: User): Promise<Order[]> {
+  getOrdersByUserId(@GetUser() user: User): Promise<OrderWithItems[]> {
     return this.orderService.findOrdersByUserId(user.id);
   }
 
   @Get('order/:id')
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
-  getOrderById(@Param('id') id: string): Promise<Order> {
+  getOrderById(@Param('id') id: string): Promise<OrderWithItems> {
     return this.orderService.findOrderById(id);
   }
 

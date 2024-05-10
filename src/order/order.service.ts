@@ -14,6 +14,7 @@ import {
   ORDER_SERVICE_NAME,
   Order,
   OrderServiceClient,
+  OrderWithItems,
   StatusResponse,
   UpdateOrderRequest,
 } from './order.pb';
@@ -31,7 +32,7 @@ export class OrderService implements OnModuleInit {
     this.orderService = this.orderServiceClient.getService(ORDER_SERVICE_NAME);
   }
 
-  async findOrderById(id: string): Promise<Order> {
+  async findOrderById(id: string): Promise<OrderWithItems> {
     try {
       const response = await firstValueFrom(
         this.orderService.getOrderById({ id }),
@@ -46,7 +47,7 @@ export class OrderService implements OnModuleInit {
     }
   }
 
-  async findOrdersByUserId(userId: string): Promise<Order[]> {
+  async findOrdersByUserId(userId: string): Promise<OrderWithItems[]> {
     try {
       const { orderList } = await firstValueFrom(
         this.orderService.getOrdersByUserId({ id: userId }),
