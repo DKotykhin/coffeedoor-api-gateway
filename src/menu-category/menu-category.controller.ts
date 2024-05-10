@@ -21,7 +21,11 @@ import {
   CreateMenuCategoryDto,
   UpdateMenuCategoryDto,
 } from './dto/_index';
-import { MenuCategory, StatusResponse } from './menu-category.pb';
+import {
+  MenuCategory,
+  MenuCategoryWithMenuItems,
+  StatusResponse,
+} from './menu-category.pb';
 
 @ApiTags('menu-categories')
 @ApiBearerAuth()
@@ -32,12 +36,14 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
-  getMenuCategories(): Promise<MenuCategory[]> {
+  getMenuCategories(): Promise<MenuCategoryWithMenuItems[]> {
     return this.menuCategoryService.getMenuCategories();
   }
 
   @Get(':id')
-  getMenuCategoryById(@Param('id') id: string): Promise<MenuCategory> {
+  getMenuCategoryById(
+    @Param('id') id: string,
+  ): Promise<MenuCategoryWithMenuItems> {
     return this.menuCategoryService.getMenuCategoryById(id);
   }
 

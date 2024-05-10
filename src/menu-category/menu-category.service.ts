@@ -19,6 +19,7 @@ import {
   MENU_CATEGORY_SERVICE_NAME,
   MenuCategory,
   MenuCategoryServiceClient,
+  MenuCategoryWithMenuItems,
   StatusResponse,
 } from './menu-category.pb';
 
@@ -37,7 +38,9 @@ export class MenuCategoryService implements OnModuleInit {
     );
   }
 
-  async getMenuByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
+  async getMenuByLanguage(
+    language: LanguageCode,
+  ): Promise<MenuCategoryWithMenuItems[]> {
     try {
       const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getMenuCategoriesByLanguage({
@@ -54,7 +57,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async getMenuCategories(): Promise<MenuCategory[]> {
+  async getMenuCategories(): Promise<MenuCategoryWithMenuItems[]> {
     try {
       const { menuCategoryList } = await firstValueFrom(
         this.menuCategoryService.getAllMenuCategories({}),
@@ -69,7 +72,7 @@ export class MenuCategoryService implements OnModuleInit {
     }
   }
 
-  async getMenuCategoryById(id: string): Promise<MenuCategory> {
+  async getMenuCategoryById(id: string): Promise<MenuCategoryWithMenuItems> {
     try {
       return await firstValueFrom(
         this.menuCategoryService.getMenuCategoryById({ id }),

@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { LanguageCode } from '../types/enums';
 import { MenuCategoryService } from './menu-category.service';
-import { MenuCategory } from './menu-category.pb';
+import { MenuCategoryWithMenuItems } from './menu-category.pb';
 
 @ApiTags('all-menu')
 @Controller('all-menu')
@@ -13,7 +13,7 @@ export class AllMenuController {
   @Get()
   getMenuByLanguage(
     @Query('language') language: LanguageCode,
-  ): Promise<MenuCategory[]> {
+  ): Promise<MenuCategoryWithMenuItems[]> {
     return this.menuCategoryService.getMenuByLanguage(language);
   }
 }
