@@ -18,7 +18,11 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { StoreCategoryService } from './store-category.service';
 import { CreateStoreCategoryDto } from './dto/create-store-category.dto';
 import { UpdateStoreCategoryDto } from './dto/update-store-category.dto';
-import { StatusResponse, StoreCategory } from './store-category.pb';
+import {
+  StatusResponse,
+  StoreCategory,
+  StoreCategoryWithItems,
+} from './store-category.pb';
 
 @ApiTags('store-categories')
 @ApiBearerAuth()
@@ -29,12 +33,14 @@ export class StoreCategoryController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 
   @Get()
-  getAllStore(): Promise<StoreCategory[]> {
+  getAllStore(): Promise<StoreCategoryWithItems[]> {
     return this.storeCategoryService.getAllStore();
   }
 
   @Get(':id')
-  getStoreCategoryById(@Param('id') id: string): Promise<StoreCategory> {
+  getStoreCategoryById(
+    @Param('id') id: string,
+  ): Promise<StoreCategoryWithItems> {
     return this.storeCategoryService.getStoreCategoryById(id);
   }
 

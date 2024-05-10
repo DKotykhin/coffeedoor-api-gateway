@@ -19,7 +19,11 @@ import { RoleTypes } from '../types/enums';
 import { StoreItemService } from './store-item.service';
 import { CreateStoreItemDto } from './dto/create-store-item.dto';
 import { UpdateStoreItemDto } from './dto/update-store-item.dto';
-import { StatusResponse, StoreItem } from './store-item.pb';
+import {
+  StatusResponse,
+  StoreItem,
+  StoreItemWithImages,
+} from './store-item.pb';
 
 @ApiTags('store-item')
 @ApiBearerAuth()
@@ -32,12 +36,14 @@ export class StoreItemController {
   @Get()
   findStoreItemsByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Promise<StoreItem[]> {
+  ): Promise<StoreItemWithImages[]> {
     return this.storeItemService.findStoreItemsByCategoryId(categoryId);
   }
 
   @Get(':slug')
-  getStoreItemBySlug(@Param('slug') slug: string): Promise<StoreItem> {
+  getStoreItemBySlug(
+    @Param('slug') slug: string,
+  ): Promise<StoreItemWithImages> {
     return this.storeItemService.getStoreItemBySlug(slug);
   }
 
