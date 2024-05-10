@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, Length, IsOptional } from 'class-validator';
+import { IsString, Length, IsOptional, IsMobilePhone } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto {
@@ -36,42 +36,13 @@ export class UpdateUserDto {
     description: 'User Phone Number',
     type: String,
     example: '+380123456789',
-    minLength: 7,
-    maxLength: 12,
+    minLength: 10,
+    maxLength: 13,
     required: false,
   })
   @IsOptional()
   @IsString()
-  @Length(7, 12, { message: 'Phone must be between 7 and 12 characters' })
+  @Length(10, 13, { message: 'Phone must be between 10 and 13 characters' })
+  @IsMobilePhone('uk-UA')
   phoneNumber?: string;
-
-  @ApiProperty({
-    description: 'User Avatar',
-    type: String,
-    example: 'https://example.com/avatar.jpg',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  avatar?: string;
-
-  @ApiProperty({
-    description: 'User is Verified',
-    type: Boolean,
-    default: false,
-    required: false,
-  })
-  @IsOptional()
-  @IsBoolean()
-  isVerified?: boolean;
-
-  @ApiProperty({
-    description: 'User Password Hash',
-    type: String,
-    example: 'Password123Hash',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  passwordHash?: string;
 }
