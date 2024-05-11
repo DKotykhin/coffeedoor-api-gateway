@@ -9,11 +9,13 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 
 import { errorCodeImplementation } from '../utils/error-code-implementation';
+import { FileUploadService } from '../file-upload/file-upload.service';
 import {
   CreateStoreItemRequest,
   STORE_ITEM_SERVICE_NAME,
   StatusResponse,
   StoreItem,
+  StoreItemImage,
   StoreItemServiceClient,
   StoreItemWithAd,
   StoreItemWithImages,
@@ -27,6 +29,7 @@ export class StoreItemService implements OnModuleInit {
   constructor(
     @Inject('STORE_ITEM_SERVICE')
     private readonly storeItemServiceClient: ClientGrpc,
+    private readonly fileUploadService: FileUploadService,
   ) {}
 
   onModuleInit() {
@@ -37,9 +40,36 @@ export class StoreItemService implements OnModuleInit {
 
   async getStoreItemBySlugWithAd(slug: string): Promise<StoreItemWithAd> {
     try {
-      return await firstValueFrom(
+      const { storeItem, adList } = await firstValueFrom(
         this.storeItemService.getStoreItemBySlugWithAd({ slug }),
       );
+      if (storeItem.images?.length) {
+        storeItem.imageUrl = await Promise.all(
+          storeItem.images.map(async (image: StoreItemImage) => {
+            const imageUrl = await this.fileUploadService.getImageUrl(
+              image.image,
+            );
+            if (imageUrl) return imageUrl;
+          }),
+        );
+      }
+      if (adList.length) {
+        await Promise.all(
+          adList.map(async (storeItem: StoreItemWithImages) => {
+            if (storeItem.images?.length) {
+              storeItem.imageUrl = await Promise.all(
+                storeItem.images.map(async (image: StoreItemImage) => {
+                  const imageUrl = await this.fileUploadService.getImageUrl(
+                    image.image,
+                  );
+                  if (imageUrl) return imageUrl;
+                }),
+              );
+            }
+          }),
+        );
+      }
+      return { storeItem, adList };
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(
@@ -54,21 +84,48 @@ export class StoreItemService implements OnModuleInit {
       const { storeItemList } = await firstValueFrom(
         this.storeItemService.getStoreItemsByCategoryId({ id }),
       );
+      if (!storeItemList) throw new HttpException('Store items not found', 5);
+      await Promise.all(
+        storeItemList.map(async (storeItem: StoreItemWithImages) => {
+          if (storeItem.images?.length) {
+            storeItem.imageUrl = await Promise.all(
+              storeItem.images.map(async (image: StoreItemImage) => {
+                const imageUrl = await this.fileUploadService.getImageUrl(
+                  image.image,
+                );
+                if (imageUrl) return imageUrl;
+              }),
+            );
+            return storeItem;
+          }
+        }),
+      );
       return storeItemList;
     } catch (error) {
-      this.logger.error(error?.details);
+      this.logger.error(error.details || error.message);
       throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
+        error.details || error.message,
+        errorCodeImplementation(error.code || error.status),
       );
     }
   }
 
   async getStoreItemBySlug(slug: string): Promise<StoreItemWithImages> {
     try {
-      return await firstValueFrom(
+      const storeItem = await firstValueFrom(
         this.storeItemService.getStoreItemBySlug({ slug }),
       );
+      if (storeItem.images?.length) {
+        storeItem.imageUrl = await Promise.all(
+          storeItem.images.map(async (image: StoreItemImage) => {
+            const imageUrl = await this.fileUploadService.getImageUrl(
+              image.image,
+            );
+            if (imageUrl) return imageUrl;
+          }),
+        );
+      }
+      return storeItem;
     } catch (error) {
       this.logger.error(error?.details);
       throw new HttpException(

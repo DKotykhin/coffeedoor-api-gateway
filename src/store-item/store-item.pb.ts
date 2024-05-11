@@ -27,6 +27,7 @@ export interface StoreItem {
 }
 
 export interface StoreItemWithImages {
+  imageUrl: string[];
   slug: string;
   language: string;
   title: string;
