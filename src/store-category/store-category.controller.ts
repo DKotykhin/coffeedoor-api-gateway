@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
@@ -33,11 +33,13 @@ export class StoreCategoryController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all store categories with store items' })
   getAllStore(): Promise<StoreCategoryWithItems[]> {
     return this.storeCategoryService.getAllStore();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get store category by id with store items' })
   getStoreCategoryById(
     @Param('id') id: string,
   ): Promise<StoreCategoryWithItems> {
@@ -45,6 +47,7 @@ export class StoreCategoryController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create store category' })
   createStoreCategory(
     @Body() createMenuCategoryDto: CreateStoreCategoryDto,
   ): Promise<StoreCategory> {
@@ -52,6 +55,7 @@ export class StoreCategoryController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update store category' })
   updateStoreCategory(
     @Param('id') id: string,
     @Body() updateMenuCategoryDto: UpdateStoreCategoryDto,
@@ -63,6 +67,7 @@ export class StoreCategoryController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete store category' })
   deleteStoreCategory(@Param('id') id: string): Promise<StatusResponse> {
     return this.storeCategoryService.deleteStoreCategory(id);
   }

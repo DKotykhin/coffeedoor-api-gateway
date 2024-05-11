@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RoleTypes } from '../types/enums';
@@ -33,6 +33,7 @@ export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get menu items by category id' })
   findMenuItemsByCategoryId(
     @Query('categoryId') categoryId: string,
   ): Promise<MenuItem[]> {
@@ -40,11 +41,13 @@ export class MenuItemController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get menu item by id' })
   findMenuItemById(@Param('id') id: string): Promise<MenuItem> {
     return this.menuItemService.findMenuItemById(id);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create menu item' })
   createMenuItem(
     @Body() createMenuItemDto: CreateMenuItemDto,
   ): Promise<MenuItem> {
@@ -52,6 +55,7 @@ export class MenuItemController {
   }
 
   @Patch('update/:id')
+  @ApiOperation({ summary: 'Update menu item' })
   updateMenuItem(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
@@ -60,6 +64,7 @@ export class MenuItemController {
   }
 
   @Patch('change-position')
+  @ApiOperation({ summary: 'Change menu item position' })
   changeMenuItemPosition(
     @Body() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
   ): Promise<MenuItem> {
@@ -69,6 +74,7 @@ export class MenuItemController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete menu item' })
   deleteMenuItem(@Param('id') id: string): Promise<StatusResponse> {
     return this.menuItemService.deleteMenuItem(id);
   }

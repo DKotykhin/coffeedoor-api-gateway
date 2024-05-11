@@ -10,7 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -34,6 +34,7 @@ export class StoreItemController {
   constructor(private readonly storeItemService: StoreItemService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get store items by category id' })
   findStoreItemsByCategoryId(
     @Query('categoryId') categoryId: string,
   ): Promise<StoreItemWithImages[]> {
@@ -41,6 +42,7 @@ export class StoreItemController {
   }
 
   @Get(':slug')
+  @ApiOperation({ summary: 'Get store item by slug' })
   getStoreItemBySlug(
     @Param('slug') slug: string,
   ): Promise<StoreItemWithImages> {
@@ -48,6 +50,7 @@ export class StoreItemController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create store item' })
   createStoreItem(
     @Body() createStoreItemDto: CreateStoreItemDto,
   ): Promise<StoreItem> {
@@ -55,6 +58,7 @@ export class StoreItemController {
   }
 
   @Patch(':slug')
+  @ApiOperation({ summary: 'Update store item' })
   updateStoreItem(
     @Param('slug') slug: string,
     @Body() updateStoreItemDto: UpdateStoreItemDto,
@@ -66,6 +70,7 @@ export class StoreItemController {
   }
 
   @Delete(':slug')
+  @ApiOperation({ summary: 'Delete store item' })
   deleteStoreItem(@Param('slug') slug: string): Promise<StatusResponse> {
     return this.storeItemService.deleteStoreItem(slug);
   }

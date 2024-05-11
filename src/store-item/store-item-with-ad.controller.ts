@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { StoreItemService } from './store-item.service';
 import { StoreItemWithAd } from './store-item.pb';
@@ -10,6 +10,7 @@ export class StoreItemWithAdController {
   constructor(private readonly storeItemService: StoreItemService) {}
 
   @Get(':slug')
+  @ApiOperation({ summary: 'Get store item by slug with recommendation' })
   getStoreItemBySlugWithAd(
     @Param('slug') slug: string,
   ): Promise<StoreItemWithAd> {

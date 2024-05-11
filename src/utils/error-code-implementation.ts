@@ -4,7 +4,7 @@ export const errorCodeImplementation = (code: number | string): number => {
   let httpCode: number;
   switch (+code) {
     case 1:
-      httpCode = HttpStatus.UNPROCESSABLE_ENTITY;
+      httpCode = HttpStatus.METHOD_NOT_ALLOWED;
       break;
     case 3:
       httpCode = HttpStatus.BAD_REQUEST;
@@ -23,6 +23,15 @@ export const errorCodeImplementation = (code: number | string): number => {
       break;
     case 8:
       httpCode = HttpStatus.TOO_MANY_REQUESTS;
+      break;
+    case 9:
+      httpCode = HttpStatus.PRECONDITION_REQUIRED;
+      break;
+    case 10:
+      httpCode = HttpStatus.METHOD_NOT_ALLOWED;
+      break;
+    case 11:
+      httpCode = HttpStatus.PAYLOAD_TOO_LARGE;
       break;
     case 12:
       httpCode = HttpStatus.NOT_IMPLEMENTED;

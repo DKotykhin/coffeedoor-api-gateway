@@ -8,7 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   FileTypeValidator,
@@ -32,6 +32,7 @@ export class StoreItemImageController {
   constructor(private readonly storeItemImageService: StoreItemImageService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Upload store image' })
   @UseInterceptors(FileInterceptor('store-image'))
   uploadStoreImage(
     @Body('slug') slug: string,
@@ -52,6 +53,7 @@ export class StoreItemImageController {
   }
 
   @Delete()
+  @ApiOperation({ summary: 'Delete store image' })
   deleteStoreImage(@Body('image') image: string): Promise<StatusResponse> {
     return this.storeItemImageService.deleteStoreImage(image);
   }

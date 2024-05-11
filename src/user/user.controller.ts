@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   FileTypeValidator,
@@ -32,16 +32,19 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('get-by-email')
+  @ApiOperation({ summary: 'Get user by email' })
   getUserByEmail(@Body() emailDto: EmailDto): Promise<User> {
     return this.userService.getUserByEmail(emailDto.email);
   }
 
   @Get('get-by-id')
+  @ApiOperation({ summary: 'Get user by id' })
   getUserById(@Body('id') id: string): Promise<User> {
     return this.userService.getUserById(id);
   }
 
   @Patch()
+  @ApiOperation({ summary: 'Update user' })
   updateUser(
     @Body() updateUserDto: UpdateUserDto,
     @GetUser() user: User,
@@ -50,11 +53,13 @@ export class UserController {
   }
 
   @Delete()
+  @ApiOperation({ summary: 'Delete user' })
   deleteUser(@GetUser() user: User): Promise<StatusResponse> {
     return this.userService.deleteUser(user.id);
   }
 
   @Post('password')
+  @ApiOperation({ summary: 'Confirm password' })
   confirmPassword(
     @Body() passwordDto: PasswordDto,
     @GetUser() user: User,
@@ -63,6 +68,7 @@ export class UserController {
   }
 
   @Patch('password')
+  @ApiOperation({ summary: 'Change password' })
   changePassword(
     @Body() passwordDto: PasswordDto,
     @GetUser() user: User,
@@ -71,6 +77,7 @@ export class UserController {
   }
 
   @Post('avatar')
+  @ApiOperation({ summary: 'Upload avatar' })
   @UseInterceptors(FileInterceptor('avatar'))
   uploadFile(
     @GetUser() user: User,
@@ -90,6 +97,7 @@ export class UserController {
   }
 
   @Delete('avatar')
+  @ApiOperation({ summary: 'Delete avatar' })
   deleteAvatar(@GetUser() user: User): Promise<StatusResponse> {
     return this.userService.deleteAvatar(user.id);
   }

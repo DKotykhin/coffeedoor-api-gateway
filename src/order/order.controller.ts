@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
@@ -33,17 +33,20 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('user')
+  @ApiOperation({ summary: 'Get orders by user id' })
   getOrdersByUserId(@GetUser() user: User): Promise<OrderWithItems[]> {
     return this.orderService.findOrdersByUserId(user.id);
   }
 
   @Get('order/:id')
+  @ApiOperation({ summary: 'Get order by id' })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
   getOrderById(@Param('id') id: string): Promise<OrderWithItems> {
     return this.orderService.findOrderById(id);
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create order' })
   createOrder(
     @GetUser() user: User,
     @Body() order: CreateOrderRequest,
@@ -59,6 +62,7 @@ export class OrderController {
 
   @Patch(':id')
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
+  @ApiOperation({ summary: 'Update order' })
   updateOrder(
     @Param('id') id: string,
     @Body() order: UpdateOrderRequest,
@@ -70,6 +74,7 @@ export class OrderController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete order' })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
   deleteOrder(@Param('id') id: string): Promise<StatusResponse> {
     return this.orderService.deleteOrder(id);

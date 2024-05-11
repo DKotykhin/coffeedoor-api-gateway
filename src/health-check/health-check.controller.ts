@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { HealthCheckService } from './health-check.service';
 
@@ -9,6 +9,7 @@ export class HealthCheckController {
   constructor(private readonly healthCheckService: HealthCheckService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Check microservices connection' })
   checkHealth() {
     return this.healthCheckService.checkHealth();
   }

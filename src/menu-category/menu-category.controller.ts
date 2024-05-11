@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleTypes } from '../types/enums';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { MenuCategoryService } from './menu-category.service';
 import {
@@ -36,11 +36,13 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all menu categories' })
   getMenuCategories(): Promise<MenuCategoryWithMenuItems[]> {
     return this.menuCategoryService.getMenuCategories();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a menu category by id' })
   getMenuCategoryById(
     @Param('id') id: string,
   ): Promise<MenuCategoryWithMenuItems> {
@@ -48,6 +50,7 @@ export class MenuCategoryController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new menu category' })
   createMenuCategory(
     @Body() createMenuCategoryDto: CreateMenuCategoryDto,
   ): Promise<MenuCategory> {
@@ -55,6 +58,7 @@ export class MenuCategoryController {
   }
 
   @Patch('update/:id')
+  @ApiOperation({ summary: 'Update a menu category' })
   updateMenuCategory(
     @Param('id') id: string,
     @Body() updateMenuCategoryDto: UpdateMenuCategoryDto,
@@ -66,6 +70,7 @@ export class MenuCategoryController {
   }
 
   @Patch('change-position')
+  @ApiOperation({ summary: 'Change menu category position' })
   changeMenuCategoryPosition(
     @Body() changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
   ): Promise<MenuCategory> {
@@ -75,6 +80,7 @@ export class MenuCategoryController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a menu category' })
   deleteMenuCategory(@Param('id') id: string): Promise<StatusResponse> {
     return this.menuCategoryService.deleteMenuCategory(id);
   }
