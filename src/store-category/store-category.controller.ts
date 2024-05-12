@@ -9,20 +9,22 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
-import { RoleTypes } from '../types/enums';
+import { RoleTypes } from '../common/types/enums';
+import { StatusResponse } from '../common/dto/status-response.dto';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 
 import { StoreCategoryService } from './store-category.service';
 import { CreateStoreCategoryDto } from './dto/create-store-category.dto';
 import { UpdateStoreCategoryDto } from './dto/update-store-category.dto';
-import {
-  StatusResponse,
-  StoreCategory,
-  StoreCategoryWithItems,
-} from './store-category.pb';
+import { StoreCategory, StoreCategoryWithItems } from './store-category.pb';
 
 @ApiTags('store-categories')
 @ApiBearerAuth()
@@ -68,6 +70,7 @@ export class StoreCategoryController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete store category' })
+  @ApiResponse({ status: 200, type: StatusResponse })
   deleteStoreCategory(@Param('id') id: string): Promise<StatusResponse> {
     return this.storeCategoryService.deleteStoreCategory(id);
   }

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { LanguageCode } from '../../types/enums';
+import { LanguageCode } from '../../common/types/enums';
 
 export class CreateStoreCategoryDto {
   @ApiProperty({

@@ -13,7 +13,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { HasRoles } from '../auth/decorators/roles.decorator';
-import { RoleTypes } from '../types/enums';
+import { RoleTypes } from '../common/types/enums';
 import { OrderItemService } from './order-item.service';
 import {
   CreateOrderItemRequest,

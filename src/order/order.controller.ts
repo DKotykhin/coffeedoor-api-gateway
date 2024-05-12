@@ -16,7 +16,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { User } from '../auth/auth.pb';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { OrderService } from './order.service';
-import { RoleTypes } from '../types/enums';
+import { RoleTypes } from '../common/types/enums';
 import {
   CreateOrderRequest,
   Order,

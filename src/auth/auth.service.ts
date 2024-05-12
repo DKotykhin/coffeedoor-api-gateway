@@ -36,7 +36,7 @@ export class AuthService implements OnModuleInit {
       this.authServiceClient.getService<AuthServiceClient>(AUTH_SERVICE_NAME);
   }
 
-  async getUserByToken(user: Partial<User>): Promise<Partial<User>> {
+  async getUserByToken(user: User): Promise<User> {
     if (user.avatar) {
       user.avatar = await this.fileUploadService.getImageUrl(
         'avatar/' + user.avatar,
@@ -45,7 +45,7 @@ export class AuthService implements OnModuleInit {
     return user;
   }
 
-  async signUp(signUpDto: SignUpDto): Promise<Partial<User>> {
+  async signUp(signUpDto: SignUpDto): Promise<User> {
     try {
       return await firstValueFrom(this.authService.signUp(signUpDto));
     } catch (error) {
@@ -57,10 +57,7 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async signIn(
-    signInDto: SignInDto,
-    response: Response,
-  ): Promise<Partial<User>> {
+  async signIn(signInDto: SignInDto, response: Response): Promise<User> {
     try {
       const user = await firstValueFrom(this.authService.signIn(signInDto));
       if (user?.avatar) {

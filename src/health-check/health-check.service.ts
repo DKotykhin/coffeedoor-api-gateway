@@ -7,6 +7,7 @@ import {
   HealthCheckClient,
   HealthCheckResponse,
 } from './health-check.pb';
+import { HealthCheckResponseDto } from './dto/health-check-response.dto';
 
 @Injectable()
 export class HealthCheckService implements OnModuleInit {
@@ -44,12 +45,7 @@ export class HealthCheckService implements OnModuleInit {
     );
   }
 
-  async checkHealth(): Promise<{
-    menuService: HealthCheckResponse;
-    storeService: HealthCheckResponse;
-    userService: HealthCheckResponse;
-    orderService: HealthCheckResponse;
-  }> {
+  async checkHealth(): Promise<HealthCheckResponseDto> {
     try {
       this.menuService = await firstValueFrom(
         this.menuHealthCheckService.check({}),

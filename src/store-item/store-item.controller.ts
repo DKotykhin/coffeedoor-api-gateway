@@ -10,20 +10,22 @@ import {
   Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { RoleTypes } from '../types/enums';
+import { RoleTypes } from '../common/types/enums';
+import { StatusResponse } from '../common/dto/status-response.dto';
 
 import { StoreItemService } from './store-item.service';
 import { CreateStoreItemDto } from './dto/create-store-item.dto';
 import { UpdateStoreItemDto } from './dto/update-store-item.dto';
-import {
-  StatusResponse,
-  StoreItem,
-  StoreItemWithImages,
-} from './store-item.pb';
+import { StoreItem, StoreItemWithImages } from './store-item.pb';
 
 @ApiTags('store-item')
 @ApiBearerAuth()
@@ -71,6 +73,7 @@ export class StoreItemController {
 
   @Delete(':slug')
   @ApiOperation({ summary: 'Delete store item' })
+  @ApiResponse({ status: 200, type: StatusResponse })
   deleteStoreItem(@Param('slug') slug: string): Promise<StatusResponse> {
     return this.storeItemService.deleteStoreItem(slug);
   }

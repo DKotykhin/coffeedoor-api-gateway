@@ -8,7 +8,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   FileTypeValidator,
@@ -17,11 +22,12 @@ import {
 } from '@nestjs/common/pipes';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
-import { RoleTypes } from '../types/enums';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { RoleTypes } from '../common/types/enums';
+import { StatusResponse } from '../common/dto/status-response.dto';
 
 import { StoreItemImageService } from './store-item-image.service';
-import { StatusResponse } from './store-item-image.pb';
+import { ImageDto } from './dto/image.dto';
 
 @ApiTags('store-item-image')
 @ApiBearerAuth()
@@ -33,6 +39,7 @@ export class StoreItemImageController {
 
   @Post()
   @ApiOperation({ summary: 'Upload store image' })
+  @ApiResponse({ status: 200, type: StatusResponse })
   @UseInterceptors(FileInterceptor('store-image'))
   uploadStoreImage(
     @Body('slug') slug: string,
@@ -54,7 +61,8 @@ export class StoreItemImageController {
 
   @Delete()
   @ApiOperation({ summary: 'Delete store image' })
-  deleteStoreImage(@Body('image') image: string): Promise<StatusResponse> {
-    return this.storeItemImageService.deleteStoreImage(image);
+  @ApiResponse({ status: 200, type: StatusResponse })
+  deleteStoreImage(@Body() imageDto: ImageDto): Promise<StatusResponse> {
+    return this.storeItemImageService.deleteStoreImage(imageDto.image);
   }
 }

@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
-import { LanguageCode } from '../types/enums';
+import { LanguageCode } from '../common/types/enums';
 
 import { StoreCategoryService } from './store-category.service';
 import { StoreCategoryWithItems } from './store-category.pb';
@@ -13,6 +13,7 @@ export class AllStoreController {
 
   @Get()
   @ApiOperation({ summary: 'Get store by language' })
+  @ApiQuery({ name: 'language', enum: LanguageCode, required: true })
   getStoreByLanguage(
     @Query('language') language: LanguageCode,
   ): Promise<StoreCategoryWithItems[]> {

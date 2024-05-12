@@ -14,7 +14,7 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-import { LanguageCode } from '../../types/enums';
+import { LanguageCode } from '../../common/types/enums';
 
 class StoreCategory {
   @ApiProperty()

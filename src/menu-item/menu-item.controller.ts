@@ -10,19 +10,25 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { HasRoles } from '../auth/decorators/roles.decorator';
-import { RoleTypes } from '../types/enums';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { RoleTypes } from '../common/types/enums';
+import { StatusResponse } from '../common/dto/status-response.dto';
 
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
+  MenuItemDto,
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItemService } from './menu-item.service';
-import { MenuItem, StatusResponse } from './menu-item.pb';
 
 @ApiTags('menu-items')
 @ApiBearerAuth()
@@ -34,40 +40,45 @@ export class MenuItemController {
 
   @Get()
   @ApiOperation({ summary: 'Get menu items by category id' })
+  @ApiResponse({ type: MenuItemDto, isArray: true })
   findMenuItemsByCategoryId(
     @Query('categoryId') categoryId: string,
-  ): Promise<MenuItem[]> {
+  ): Promise<MenuItemDto[]> {
     return this.menuItemService.findMenuItemsByCategoryId(categoryId);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get menu item by id' })
-  findMenuItemById(@Param('id') id: string): Promise<MenuItem> {
+  @ApiResponse({ type: MenuItemDto })
+  findMenuItemById(@Param('id') id: string): Promise<MenuItemDto> {
     return this.menuItemService.findMenuItemById(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create menu item' })
+  @ApiResponse({ type: MenuItemDto })
   createMenuItem(
     @Body() createMenuItemDto: CreateMenuItemDto,
-  ): Promise<MenuItem> {
+  ): Promise<MenuItemDto> {
     return this.menuItemService.createMenuItem(createMenuItemDto);
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update menu item' })
+  @ApiResponse({ type: MenuItemDto })
   updateMenuItem(
     @Param('id') id: string,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
-  ): Promise<MenuItem> {
+  ): Promise<MenuItemDto> {
     return this.menuItemService.updateMenuItem(id, updateMenuItemDto);
   }
 
   @Patch('change-position')
   @ApiOperation({ summary: 'Change menu item position' })
+  @ApiResponse({ type: MenuItemDto })
   changeMenuItemPosition(
     @Body() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
-  ): Promise<MenuItem> {
+  ): Promise<MenuItemDto> {
     return this.menuItemService.changeMenuItemPosition(
       changeMenuItemPositionDto,
     );
@@ -75,6 +86,7 @@ export class MenuItemController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete menu item' })
+  @ApiResponse({ type: StatusResponse })
   deleteMenuItem(@Param('id') id: string): Promise<StatusResponse> {
     return this.menuItemService.deleteMenuItem(id);
   }

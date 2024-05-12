@@ -9,10 +9,18 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+
+import { UserDto } from '../user/dto/user.dto';
+import { StatusResponse } from '../common/dto/status-response.dto';
 
 import { AuthService } from './auth.service';
-import { StatusResponse, User } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
 import { GetUser } from './decorators/get-user.decorator';
 
@@ -25,47 +33,65 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user by token' })
-  getUserByToken(@GetUser() user: Partial<User>): Promise<Partial<User>> {
+  @ApiResponse({ status: 200, type: UserDto })
+  getUserByToken(@GetUser() user: UserDto): Promise<UserDto> {
     return this.authService.getUserByToken(user);
   }
 
   @Post('/sign-up')
   @ApiOperation({ summary: 'Sign up' })
-  signUp(@Body() signUpDto: SignUpDto): Promise<Partial<User>> {
+  @ApiResponse({ status: 200, type: UserDto })
+  signUp(@Body() signUpDto: SignUpDto): Promise<UserDto> {
     return this.authService.signUp(signUpDto);
   }
 
   @Post('/sign-in')
   @ApiOperation({ summary: 'Sign in' })
+  @ApiResponse({ status: 200, type: UserDto })
   signIn(
     @Body() signInDto: SignInDto,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<Partial<User>> {
+  ): Promise<UserDto> {
     return this.authService.signIn(signInDto, response);
   }
 
   @Get('/confirm-email/:token')
   @ApiOperation({ summary: 'Confirm email' })
+  @ApiResponse({
+    status: 200,
+    type: StatusResponse,
+  })
   confirmEmail(@Param('token') token: string): Promise<StatusResponse> {
     return this.authService.confirmEmail(token);
   }
 
   @Get('/resend-email')
   @ApiOperation({ summary: 'Resend email' })
-  resendEmail(
-    @Body('email') email: EmailDto['email'],
-  ): Promise<StatusResponse> {
-    return this.authService.resendEmail(email);
+  @ApiBody({ type: EmailDto })
+  @ApiResponse({
+    status: 200,
+    type: StatusResponse,
+  })
+  resendEmail(@Body() emailDto: EmailDto): Promise<StatusResponse> {
+    return this.authService.resendEmail(emailDto.email);
   }
 
   @Post('/reset-password')
   @ApiOperation({ summary: 'Reset password' })
+  @ApiResponse({
+    status: 200,
+    type: StatusResponse,
+  })
   resetPassword(@Body() emailDto: EmailDto): Promise<StatusResponse> {
     return this.authService.resetPassword(emailDto);
   }
 
   @Post('new-password/:token')
   @ApiOperation({ summary: 'Set new password' })
+  @ApiResponse({
+    status: 200,
+    type: StatusResponse,
+  })
   setNewPassword(
     @Param('token') token: string,
     @Body() passwordDto: PasswordDto,
