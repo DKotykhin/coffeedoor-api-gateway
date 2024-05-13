@@ -26,18 +26,22 @@ import {
 } from '@nestjs/common/pipes';
 
 import { EmailDto, PasswordDto } from '../auth/dto/auth.dto';
-import { StatusResponse } from '../common/dto/status-response.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { StatusResponse } from '../common/dto/status-response.dto';
+import { IdDto } from '../common/dto/id.dto';
+import { RoleTypes } from '../common/types/enums';
 
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { IdDto } from '../common/dto/id.dto';
+import { ChangeUserRoleDto } from './dto/change-user-role.dto';
 
 @ApiTags('user')
 @ApiBearerAuth()
 @Controller('user')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'), RolesGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -55,7 +59,7 @@ export class UserController {
     return this.userService.getUserById(idDto.id);
   }
 
-  @Patch()
+  @Patch('update')
   @ApiOperation({ summary: 'Update user' })
   @ApiResponse({ status: 200, type: UserDto })
   updateUser(
@@ -63,6 +67,15 @@ export class UserController {
     @GetUser() user: UserDto,
   ): Promise<UserDto> {
     return this.userService.updateUser(user.id, updateUserDto);
+  }
+
+  @Patch('role')
+  @HasRoles(RoleTypes.ADMIN)
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiOperation({ summary: 'Change user role' })
+  @ApiResponse({ status: 200, type: UserDto })
+  changeUserRole(@Body() roleDto: ChangeUserRoleDto): Promise<UserDto> {
+    return this.userService.changeUserRole(roleDto);
   }
 
   @Delete()

@@ -17,6 +17,7 @@ import {
   UserServiceClient,
 } from './user.pb';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ChangeUserRoleDto } from './dto/change-user-role.dto';
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -37,7 +38,10 @@ export class UserService implements OnModuleInit {
       return await firstValueFrom(this.userService.getUserByEmail({ email }));
     } catch (error) {
       this.logger.error(error?.details);
-      return null;
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
     }
   }
 
@@ -57,6 +61,27 @@ export class UserService implements OnModuleInit {
     try {
       return await firstValueFrom(
         this.userService.updateUser({ id, ...updateUserDto }),
+      );
+    } catch (error) {
+      this.logger.error(error?.details);
+      throw new HttpException(
+        error?.details,
+        errorCodeImplementation(error?.code),
+      );
+    }
+  }
+
+  async changeUserRole(changeUserRoleDto: ChangeUserRoleDto): Promise<User> {
+    const { email, role } = changeUserRoleDto;
+    try {
+      const user = await firstValueFrom(
+        this.userService.getUserByEmail({ email }),
+      );
+      if (!user) {
+        throw new HttpException('User not found', 5);
+      }
+      return await firstValueFrom(
+        this.userService.updateUser({ id: user.id, role }),
       );
     } catch (error) {
       this.logger.error(error?.details);
