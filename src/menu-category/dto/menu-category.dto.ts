@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { LanguageCode } from '../../common/types/enums';
 
 export class MenuCategoryDto {
@@ -14,8 +14,8 @@ export class MenuCategoryDto {
   @ApiProperty()
   description: string;
 
-  @ApiPropertyOptional()
-  image?: string;
+  @ApiProperty()
+  image: string;
 
   @ApiProperty()
   hidden: boolean;
