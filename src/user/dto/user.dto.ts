@@ -12,17 +12,23 @@ export class UserDto {
   email: string;
 
   @ApiPropertyOptional()
-  address?: string;
+  address: string;
 
   @ApiPropertyOptional()
-  phoneNumber?: string;
+  phoneNumber: string;
 
   @ApiPropertyOptional()
-  avatar?: string;
+  avatar: string;
 
   @ApiProperty()
   isVerified: boolean;
 
   @ApiProperty({ enum: RoleTypes })
   role: RoleTypes | string;
+
+  @ApiProperty()
+  createdAt: string;
+
+  @ApiProperty()
+  updatedAt: string;
 }
