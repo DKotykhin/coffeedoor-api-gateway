@@ -1,8 +1,8 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { StoreItemService } from './store-item.service';
-import { StoreItemWithAd } from './store-item.pb';
+import { StoreItemWithAdDto } from './dto/store-item-with-ad.dto';
 
 @ApiTags('store-item-with-ad')
 @Controller('store-item-with-ad')
@@ -11,9 +11,10 @@ export class StoreItemWithAdController {
 
   @Get(':slug')
   @ApiOperation({ summary: 'Get store item by slug with recommendation' })
+  @ApiResponse({ status: 200, type: StoreItemWithAdDto })
   getStoreItemBySlugWithAd(
     @Param('slug') slug: string,
-  ): Promise<StoreItemWithAd> {
+  ): Promise<StoreItemWithAdDto> {
     return this.storeItemService.getStoreItemBySlugWithAd(slug);
   }
 }

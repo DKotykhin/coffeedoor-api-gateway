@@ -3,7 +3,7 @@ import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { LanguageCode } from '../common/types/enums';
 import { MenuCategoryService } from './menu-category.service';
-import { MenuCategoryWithMenuItems } from './menu-category.pb';
+import { MenuCategoryWithMenuItemsDto } from './dto/menu-category-with-menu-items.dto';
 
 @ApiTags('all-menu')
 @Controller('all-menu')
@@ -15,7 +15,7 @@ export class AllMenuController {
   @ApiQuery({ name: 'language', enum: LanguageCode, required: true })
   getMenuByLanguage(
     @Query('language') language: LanguageCode,
-  ): Promise<MenuCategoryWithMenuItems[]> {
+  ): Promise<MenuCategoryWithMenuItemsDto[]> {
     return this.menuCategoryService.getMenuByLanguage(language);
   }
 }

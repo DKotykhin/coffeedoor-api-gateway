@@ -8,22 +8,28 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { User } from '../auth/auth.pb';
 import { HasRoles } from '../auth/decorators/roles.decorator';
-import { OrderService } from './order.service';
 import { RoleTypes } from '../common/types/enums';
+import { UserDto } from '../user/dto/user.dto';
+import { StatusResponse } from '../common/dto/status-response.dto';
+
+import { OrderService } from './order.service';
 import {
-  CreateOrderRequest,
-  Order,
-  OrderWithItems,
-  StatusResponse,
-  UpdateOrderRequest,
-} from './order.pb';
+  CreateOrderDto,
+  OrderDto,
+  OrderWithItemsDto,
+  UpdateOrderDto,
+} from './dto/_index';
 
 @ApiTags('order')
 @ApiBearerAuth()
@@ -34,23 +40,26 @@ export class OrderController {
 
   @Get('user')
   @ApiOperation({ summary: 'Get orders by user id' })
-  getOrdersByUserId(@GetUser() user: User): Promise<OrderWithItems[]> {
+  @ApiResponse({ status: 200, type: OrderWithItemsDto, isArray: true })
+  getOrdersByUserId(@GetUser() user: UserDto): Promise<OrderWithItemsDto[]> {
     return this.orderService.findOrdersByUserId(user.id);
   }
 
   @Get('order/:id')
   @ApiOperation({ summary: 'Get order by id' })
+  @ApiResponse({ status: 200, type: OrderWithItemsDto })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
-  getOrderById(@Param('id') id: string): Promise<OrderWithItems> {
+  getOrderById(@Param('id') id: string): Promise<OrderWithItemsDto> {
     return this.orderService.findOrderById(id);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create order' })
+  @ApiResponse({ status: 201, type: OrderDto })
   createOrder(
-    @GetUser() user: User,
-    @Body() order: CreateOrderRequest,
-  ): Promise<Order> {
+    @GetUser() user: UserDto,
+    @Body() order: CreateOrderDto,
+  ): Promise<OrderDto> {
     return this.orderService.createOrder({
       ...order,
       userOrder: {
@@ -63,10 +72,11 @@ export class OrderController {
   @Patch(':id')
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
   @ApiOperation({ summary: 'Update order' })
+  @ApiResponse({ status: 200, type: OrderDto })
   updateOrder(
     @Param('id') id: string,
-    @Body() order: UpdateOrderRequest,
-  ): Promise<Order> {
+    @Body() order: UpdateOrderDto,
+  ): Promise<OrderDto> {
     return this.orderService.updateOrder({
       id,
       ...order,
@@ -75,6 +85,7 @@ export class OrderController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete order' })
+  @ApiResponse({ status: 200, type: StatusResponse })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
   deleteOrder(@Param('id') id: string): Promise<StatusResponse> {
     return this.orderService.deleteOrder(id);
