@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsObject,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   ValidateNested,
@@ -53,6 +54,7 @@ export class CreateMenuItemDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsPositive()
   position: number;
 
   @ApiProperty()

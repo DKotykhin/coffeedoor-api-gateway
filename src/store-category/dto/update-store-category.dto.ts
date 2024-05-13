@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
 } from 'class-validator';
 
@@ -27,5 +28,6 @@ export class UpdateStoreCategoryDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   position: number;
 }

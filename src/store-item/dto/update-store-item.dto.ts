@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export class UpdateStoreItemDto {
   @ApiProperty({ required: false })
@@ -40,6 +46,7 @@ export class UpdateStoreItemDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   price: number;
 
   @ApiProperty({ required: false })
@@ -70,5 +77,6 @@ export class UpdateStoreItemDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   position: number;
 }

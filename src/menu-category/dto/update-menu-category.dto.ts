@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
@@ -35,5 +36,6 @@ export class UpdateMenuCategoryDto extends PartialType(CreateMenuCategoryDto) {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   position: number;
 }

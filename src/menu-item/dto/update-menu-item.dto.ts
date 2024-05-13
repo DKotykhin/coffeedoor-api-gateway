@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -37,5 +38,6 @@ export class UpdateMenuItemDto extends PartialType(CreateMenuItemDto) {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   position: number;
 }

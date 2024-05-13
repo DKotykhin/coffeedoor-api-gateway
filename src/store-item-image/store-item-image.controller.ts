@@ -10,6 +10,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -39,6 +41,21 @@ export class StoreItemImageController {
 
   @Post()
   @ApiOperation({ summary: 'Upload store image' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        slug: { type: 'string' },
+        position: { type: 'integer' },
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Max size 5MB',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, type: StatusResponse })
   @UseInterceptors(FileInterceptor('store-image'))
   uploadStoreImage(

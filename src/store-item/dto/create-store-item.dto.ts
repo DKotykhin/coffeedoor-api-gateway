@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsObject,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   ValidateNested,
@@ -74,11 +75,13 @@ export class CreateStoreItemDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
+  @IsPositive()
   price: number;
 
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   oldPrice: number;
 
   @ApiProperty({ required: false })
@@ -89,6 +92,7 @@ export class CreateStoreItemDto {
   @ApiProperty({ required: false })
   @IsOptional()
   @IsNumber()
+  @IsPositive()
   weight: number;
 
   @IsOptional()
@@ -102,6 +106,7 @@ export class CreateStoreItemDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsPositive()
   position: number;
 
   @IsDefined()

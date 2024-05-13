@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsPositive,
   IsString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -40,5 +41,6 @@ export class CreateMenuCategoryDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsPositive()
   position: number;
 }

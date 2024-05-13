@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsPositive, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ChangeMenuCategoryPositionDto {
@@ -10,10 +10,12 @@ export class ChangeMenuCategoryPositionDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
+  @IsPositive()
   oldPosition: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
+  @IsPositive()
   newPosition: number;
 }

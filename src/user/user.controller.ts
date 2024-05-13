@@ -13,6 +13,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiResponse,
   ApiTags,
@@ -91,7 +93,20 @@ export class UserController {
   }
 
   @Post('avatar')
-  @ApiOperation({ summary: 'Upload avatar' })
+  @ApiOperation({ summary: 'Upload user avatar' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+          description: 'Max size 3MB',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 200, type: StatusResponse })
   @UseInterceptors(FileInterceptor('avatar'))
   uploadFile(
