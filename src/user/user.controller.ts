@@ -71,7 +71,6 @@ export class UserController {
 
   @Patch('role')
   @HasRoles(RoleTypes.ADMIN)
-  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @ApiOperation({ summary: 'Change user role' })
   @ApiResponse({ status: 200, type: UserDto })
   changeUserRole(@Body() roleDto: ChangeUserRoleDto): Promise<UserDto> {
