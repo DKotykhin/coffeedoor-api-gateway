@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
 
 import { validate } from './utils/env.validator';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
@@ -20,6 +21,10 @@ import { StoreItemImageModule } from './store-item-image/store-item-image.module
       isGlobal: true,
       envFilePath: ['.env.stage.dev'],
       validate,
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 10 * 1000,
     }),
     AuthModule,
     HealthCheckModule,

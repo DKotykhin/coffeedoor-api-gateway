@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 import { LanguageCode } from '../common/types/enums';
 
@@ -8,6 +9,7 @@ import { StoreCategoryWithItemsDto } from './dto/store-category-with-items.dto';
 
 @ApiTags('all-store')
 @Controller('all-store')
+@UseInterceptors(CacheInterceptor)
 export class AllStoreController {
   constructor(private readonly storeCategoryService: StoreCategoryService) {}
 

@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 import { LanguageCode } from '../common/types/enums';
 import { errorCodeImplementation } from '../utils/error-code-implementation';
@@ -30,6 +32,7 @@ export class MenuCategoryService implements OnModuleInit {
   constructor(
     @Inject('MENU_CATEGORY_SERVICE')
     private readonly menuServiceClient: ClientGrpc,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   onModuleInit() {
@@ -47,6 +50,7 @@ export class MenuCategoryService implements OnModuleInit {
           language,
         }),
       );
+      await this.cacheManager.set('menu', menuCategoryList);
       return menuCategoryList;
     } catch (error) {
       this.logger.error(error?.details);

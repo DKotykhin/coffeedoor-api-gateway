@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
 import { LanguageCode } from '../common/types/enums';
 import { MenuCategoryService } from './menu-category.service';
@@ -7,6 +8,8 @@ import { MenuCategoryWithMenuItemsDto } from './dto/menu-category-with-menu-item
 
 @ApiTags('all-menu')
 @Controller('all-menu')
+@UseInterceptors(CacheInterceptor)
+@CacheTTL(60 * 1000)
 export class AllMenuController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
 

@@ -9,11 +9,18 @@ describe('MenuCategoryController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AllMenuController],
-      providers: [MenuCategoryService],
-    })
-      .overrideProvider(MenuCategoryService)
-      .useValue({})
-      .compile();
+      providers: [
+        MenuCategoryService,
+        {
+          provide: 'MENU_CATEGORY_SERVICE',
+          useValue: {},
+        },
+        {
+          provide: 'CACHE_MANAGER',
+          useValue: {},
+        },
+      ],
+    }).compile();
 
     controller = module.get<AllMenuController>(AllMenuController);
   });

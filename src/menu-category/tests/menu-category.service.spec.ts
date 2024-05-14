@@ -13,6 +13,10 @@ describe('MenuCategoryService', () => {
           provide: 'MENU_CATEGORY_SERVICE',
           useValue: {},
         },
+        {
+          provide: 'CACHE_MANAGER',
+          useValue: {},
+        },
       ],
     }).compile();
 

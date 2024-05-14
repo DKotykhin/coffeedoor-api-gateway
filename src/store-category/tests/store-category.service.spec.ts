@@ -18,6 +18,10 @@ describe('StoreCategoryService', () => {
           provide: FileUploadService,
           useValue: {},
         },
+        {
+          provide: 'CACHE_MANAGER',
+          useValue: {},
+        },
       ],
     }).compile();
 
