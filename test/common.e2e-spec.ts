@@ -29,8 +29,12 @@ describe('Common Controller (e2e)', () => {
       .get('/health-check')
       .expect(200);
     expect(JSON.parse(res.text)).toHaveProperty('menuService');
+    expect(JSON.parse(res.text).menuService).toHaveProperty('status', 1);
     expect(JSON.parse(res.text)).toHaveProperty('orderService');
+    expect(JSON.parse(res.text).orderService).toHaveProperty('status', 1);
     expect(JSON.parse(res.text)).toHaveProperty('storeService');
+    expect(JSON.parse(res.text).storeService).toHaveProperty('status', 1);
     expect(JSON.parse(res.text)).toHaveProperty('userService');
+    expect(JSON.parse(res.text).userService).toHaveProperty('status', 1);
   });
 });

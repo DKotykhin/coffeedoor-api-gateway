@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 
 import { AppModule } from '../src/app.module';
@@ -19,6 +19,7 @@ describe('User Controller (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 
@@ -79,6 +80,16 @@ describe('User Controller (e2e)', () => {
     expect(res.body).toHaveProperty('statusCode', 404);
   });
 
+  it('should not get user by email - validation error', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/user/get-by-email')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ email: 'kotykhin_d+1ukr.net' })
+      .expect(400);
+    expect(res.body).toHaveProperty('error', 'Bad Request');
+    expect(res.body).toHaveProperty('statusCode', 400);
+  });
+
   it('should get user by id', async () => {
     const res = await request(app.getHttpServer())
       .get('/user/get-by-id')
@@ -101,7 +112,7 @@ describe('User Controller (e2e)', () => {
     expect(res.body).toHaveProperty('status', true);
   });
 
-  it('should not confirm password - error', async () => {
+  it('should not confirm password - password error', async () => {
     const res = await request(app.getHttpServer())
       .post('/user/password')
       .set('Authorization', `Bearer ${authToken}`)
@@ -109,6 +120,17 @@ describe('User Controller (e2e)', () => {
       .set('Authorization', `Bearer ${authToken}`)
       .expect(400);
     expect(res.body).toHaveProperty('message', 'Password not match');
+    expect(res.body).toHaveProperty('statusCode', 400);
+  });
+
+  it('should not confirm password - validation error', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/user/password')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ password: '123' })
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(400);
+    expect(res.body).toHaveProperty('error', 'Bad Request');
     expect(res.body).toHaveProperty('statusCode', 400);
   });
 });
