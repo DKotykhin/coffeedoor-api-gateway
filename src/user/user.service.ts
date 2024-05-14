@@ -39,7 +39,7 @@ export class UserService implements OnModuleInit {
   async getUserByEmail(email: string): Promise<User> {
     try {
       const cachedUser: User = await this.cacheManager.get('user');
-      if (cachedUser) {
+      if (cachedUser?.email === email) {
         return cachedUser;
       }
       const user = await firstValueFrom(

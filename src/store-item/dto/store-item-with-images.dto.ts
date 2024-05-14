@@ -5,8 +5,8 @@ import { StoreItemImageDto } from '../../store-item-image/dto/store-item-image.d
 
 export class StoreItemWithImagesDto extends StoreItemDto {
   @ApiProperty({ type: StoreItemImageDto, isArray: true })
-  images: StoreItemImageDto[];
+  images?: StoreItemImageDto[];
 
   @ApiProperty({ type: 'string', isArray: true })
-  imageUrl: string[];
+  imageUrl?: string[];
 }
