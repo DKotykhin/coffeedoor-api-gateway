@@ -40,14 +40,14 @@ export class AuthController {
 
   @Post('/sign-up')
   @ApiOperation({ summary: 'Sign up' })
-  @ApiResponse({ status: 200, type: UserDto })
+  @ApiResponse({ status: 201, type: UserDto })
   signUp(@Body() signUpDto: SignUpDto): Promise<UserDto> {
     return this.authService.signUp(signUpDto);
   }
 
   @Post('/sign-in')
   @ApiOperation({ summary: 'Sign in' })
-  @ApiResponse({ status: 200, type: UserDto })
+  @ApiResponse({ status: 201, type: UserDto })
   signIn(
     @Body() signInDto: SignInDto,
     @Res({ passthrough: true }) response: Response,
