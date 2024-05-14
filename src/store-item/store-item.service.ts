@@ -71,11 +71,10 @@ export class StoreItemService implements OnModuleInit {
       }
       return { storeItem, adList };
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -127,11 +126,10 @@ export class StoreItemService implements OnModuleInit {
       }
       return storeItem;
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -141,11 +139,10 @@ export class StoreItemService implements OnModuleInit {
         this.storeItemService.createStoreItem(storeItem),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -155,11 +152,10 @@ export class StoreItemService implements OnModuleInit {
         this.storeItemService.updateStoreItem(storeItem),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -169,11 +165,10 @@ export class StoreItemService implements OnModuleInit {
         this.storeItemService.deleteStoreItem({ slug }),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 }

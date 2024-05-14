@@ -39,11 +39,10 @@ export class MenuItemService implements OnModuleInit {
       );
       return menuItemList;
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -51,11 +50,10 @@ export class MenuItemService implements OnModuleInit {
     try {
       return await firstValueFrom(this.menuItemService.getMenuItemById({ id }));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -67,11 +65,10 @@ export class MenuItemService implements OnModuleInit {
         this.menuItemService.createMenuItem(createMenuItemDto),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -87,11 +84,10 @@ export class MenuItemService implements OnModuleInit {
         }),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -103,11 +99,10 @@ export class MenuItemService implements OnModuleInit {
         this.menuItemService.changeMenuItemPosition(changeMenuItemPositionDto),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -115,11 +110,10 @@ export class MenuItemService implements OnModuleInit {
     try {
       return await firstValueFrom(this.menuItemService.deleteMenuItem({ id }));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 }

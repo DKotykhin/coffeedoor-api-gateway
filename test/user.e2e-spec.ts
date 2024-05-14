@@ -69,6 +69,16 @@ describe('User Controller (e2e)', () => {
     expect(res.body.role).toContain(RoleTypes.ADMIN || RoleTypes.SUBADMIN);
   });
 
+  it('should not get user by email - email error', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/user/get-by-email')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ email: 'kotykhin_d+111@ukr.net' })
+      .expect(404);
+    expect(res.body).toHaveProperty('message', 'User not found');
+    expect(res.body).toHaveProperty('statusCode', 404);
+  });
+
   it('should get user by id', async () => {
     const res = await request(app.getHttpServer())
       .get('/user/get-by-id')
@@ -89,5 +99,16 @@ describe('User Controller (e2e)', () => {
       .set('Authorization', `Bearer ${authToken}`)
       .expect(201);
     expect(res.body).toHaveProperty('status', true);
+  });
+
+  it('should not confirm password - error', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/user/password')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({ password: credentials.password + '1' })
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(400);
+    expect(res.body).toHaveProperty('message', 'Password not match');
+    expect(res.body).toHaveProperty('statusCode', 400);
   });
 });
