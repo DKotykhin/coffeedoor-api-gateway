@@ -46,7 +46,7 @@ export interface StoreItem {
   weight: number;
   hidden: boolean;
   position: number;
-  images: StoreItemImage[];
+  images?: StoreItemImage[];
 }
 
 export interface StoreItemImage {

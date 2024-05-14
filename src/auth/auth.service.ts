@@ -11,6 +11,7 @@ import { firstValueFrom } from 'rxjs';
 import { Response } from 'express';
 
 import { errorCodeImplementation } from '../utils/error-code-implementation';
+import { FileUploadService } from '../file-upload/file-upload.service';
 import {
   AUTH_SERVICE_NAME,
   AuthServiceClient,
@@ -19,7 +20,6 @@ import {
 } from './auth.pb';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
 import { JwtPayload } from './dto/jwtPayload.dto';
-import { FileUploadService } from '../file-upload/file-upload.service';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -68,7 +68,7 @@ export class AuthService implements OnModuleInit {
       const payload: JwtPayload = { email: user.email };
       const auth_token = this.jwtService.sign(payload);
       response.cookie('auth_token', auth_token, { httpOnly: true });
-      console.log('auth_token:', auth_token);
+      this.logger.debug(`auth_token: ${auth_token}`);
       return user;
     } catch (error) {
       this.logger.error(error?.details);

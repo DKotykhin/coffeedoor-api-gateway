@@ -54,7 +54,9 @@ export class StoreCategoryService implements OnModuleInit {
                 return await this.fileUploadService.getImageUrl(image?.image);
               }),
             );
-            return item;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { images, ...rest } = item;
+            return rest;
           }),
         );
       }),
