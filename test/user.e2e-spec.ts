@@ -47,6 +47,29 @@ describe('User Controller (e2e)', () => {
     userId = res.body.id;
   });
 
+  it('should not login - invalid credentials', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/auth/sign-in')
+      .send({
+        email: 'kotykhin_d+1@ukr.net',
+        password: 'Qq12345678910',
+      })
+      .expect(400);
+    expect(res.body).toHaveProperty('statusCode', 400);
+  });
+
+  it('should not login - validation error', async () => {
+    const res = await request(app.getHttpServer())
+      .post('/auth/sign-in')
+      .send({
+        email: 'kotykhin_d+1ukr.net',
+        password: '12345678',
+      })
+      .expect(400);
+    expect(res.body).toHaveProperty('error', 'Bad Request');
+    expect(res.body).toHaveProperty('statusCode', 400);
+  });
+
   it('should get user by token', async () => {
     const res = await request(app.getHttpServer())
       .get('/auth/user')
@@ -56,6 +79,14 @@ describe('User Controller (e2e)', () => {
     expect(res.body).toHaveProperty('email');
     expect(res.body.email).toBe(credentials.email);
     expect(res.body.role).toContain(RoleTypes.ADMIN || RoleTypes.SUBADMIN);
+  });
+
+  it('should not get user by token - invalid token', async () => {
+    const res = await request(app.getHttpServer())
+      .get('/auth/user')
+      .set('Authorization', `Bearer ${authToken}1`)
+      .expect(401);
+    expect(res.body).toHaveProperty('statusCode', 401);
   });
 
   it('should get user by email', async () => {
@@ -107,7 +138,6 @@ describe('User Controller (e2e)', () => {
       .post('/user/password')
       .set('Authorization', `Bearer ${authToken}`)
       .send({ password: credentials.password })
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(201);
     expect(res.body).toHaveProperty('status', true);
   });
@@ -117,7 +147,6 @@ describe('User Controller (e2e)', () => {
       .post('/user/password')
       .set('Authorization', `Bearer ${authToken}`)
       .send({ password: credentials.password + '1' })
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(400);
     expect(res.body).toHaveProperty('message', 'Password not match');
     expect(res.body).toHaveProperty('statusCode', 400);
@@ -128,7 +157,6 @@ describe('User Controller (e2e)', () => {
       .post('/user/password')
       .set('Authorization', `Bearer ${authToken}`)
       .send({ password: '123' })
-      .set('Authorization', `Bearer ${authToken}`)
       .expect(400);
     expect(res.body).toHaveProperty('error', 'Bad Request');
     expect(res.body).toHaveProperty('statusCode', 400);
