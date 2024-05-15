@@ -4,8 +4,9 @@ import * as request from 'supertest';
 
 import { AppModule } from '../src/app.module';
 import { RoleTypes } from '../src/common/types/enums';
+import { SignInDto } from '../src/auth/dto/auth.dto';
 
-const credentials = {
+const credentials: SignInDto = {
   email: 'kotykhin_d+1@ukr.net',
   password: 'Qq1234567',
 };

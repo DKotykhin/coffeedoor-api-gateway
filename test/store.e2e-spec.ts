@@ -5,14 +5,14 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { CreateStoreCategoryDto } from '../src/store-category/dto/_index';
 import { LanguageCode, RoleTypes } from '../src/common/types/enums';
+import { SignInDto } from '../src/auth/dto/auth.dto';
 
-const credentials = {
+const credentials: SignInDto = {
   email: 'kotykhin_d+1@ukr.net',
   password: 'Qq1234567',
 };
 
 const mockCreateStoreCategory: CreateStoreCategoryDto = {
-  // id: '74f49ef6-91dc-401a-8276-6d2f8b123041',
   language: LanguageCode.UA,
   title: 'New title',
   subtitle: 'New subtitle',

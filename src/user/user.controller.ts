@@ -29,8 +29,7 @@ import { EmailDto, PasswordDto } from '../auth/dto/auth.dto';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { StatusResponse } from '../common/dto/status-response.dto';
-import { IdDto } from '../common/dto/id.dto';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 import { RoleTypes } from '../common/types/enums';
 
 import { UserService } from './user.service';

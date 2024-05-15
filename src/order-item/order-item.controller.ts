@@ -19,7 +19,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RoleTypes } from '../common/types/enums';
-import { StatusResponse } from '../common/dto/status-response.dto';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 
 import { OrderItemService } from './order-item.service';
 import {
@@ -39,17 +39,15 @@ export class OrderItemController {
   @Get('item/:id')
   @ApiOperation({ summary: 'Get order item by id' })
   @ApiResponse({ status: 200, type: OrderItemDto })
-  getOrderItemById(@Param('id') id: string): Promise<OrderItemDto> {
-    return this.orderItemService.findOrderItemById(id);
+  getOrderItemById(@Param() idDto: IdDto): Promise<OrderItemDto> {
+    return this.orderItemService.findOrderItemById(idDto.id);
   }
 
-  @Get('order/:orderId')
+  @Get('order/:id')
   @ApiOperation({ summary: 'Get order items by order id' })
   @ApiResponse({ status: 200, type: OrderItemDto, isArray: true })
-  getOrderItemsByOrderId(
-    @Param('orderId') orderId: string,
-  ): Promise<OrderItemDto[]> {
-    return this.orderItemService.findOrderItemsByOrderId(orderId);
+  getOrderItemsByOrderId(@Param() idDto: IdDto): Promise<OrderItemDto[]> {
+    return this.orderItemService.findOrderItemsByOrderId(idDto.id);
   }
 
   @Post()
@@ -65,16 +63,19 @@ export class OrderItemController {
   @ApiOperation({ summary: 'Update order item' })
   @ApiResponse({ status: 200, type: OrderItemDto })
   updateOrderItem(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body() orderItem: UpdateOrderItemDto,
   ): Promise<OrderItemDto> {
-    return this.orderItemService.updateOrderItem({ id, ...orderItem });
+    return this.orderItemService.updateOrderItem({
+      id: idDto.id,
+      ...orderItem,
+    });
   }
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete order item' })
   @ApiResponse({ status: 200, type: StatusResponse })
-  deleteOrderItem(@Param('id') id: string): Promise<StatusResponse> {
-    return this.orderItemService.deleteOrderItem(id);
+  deleteOrderItem(@Param() idDto: IdDto): Promise<StatusResponse> {
+    return this.orderItemService.deleteOrderItem(idDto.id);
   }
 }

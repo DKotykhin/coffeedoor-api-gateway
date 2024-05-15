@@ -20,7 +20,7 @@ import {
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { RoleTypes } from '../common/types/enums';
-import { StatusResponse } from '../common/dto/status-response.dto';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 
 import { StoreItemService } from './store-item.service';
 import {
@@ -42,9 +42,9 @@ export class StoreItemController {
   @ApiOperation({ summary: 'Get store items by category id' })
   @ApiResponse({ status: 200, type: StoreItemWithImagesDto, isArray: true })
   findStoreItemsByCategoryId(
-    @Query('categoryId') categoryId: string,
+    @Query() idDto: IdDto,
   ): Promise<StoreItemWithImagesDto[]> {
-    return this.storeItemService.findStoreItemsByCategoryId(categoryId);
+    return this.storeItemService.findStoreItemsByCategoryId(idDto.id);
   }
 
   @Get(':slug')

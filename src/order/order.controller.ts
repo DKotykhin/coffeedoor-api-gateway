@@ -19,9 +19,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { HasRoles } from '../auth/decorators/roles.decorator';
-import { RoleTypes } from '../common/types/enums';
 import { UserDto } from '../user/dto/user.dto';
-import { StatusResponse } from '../common/dto/status-response.dto';
+import { RoleTypes } from '../common/types/enums';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 
 import { OrderService } from './order.service';
 import {
@@ -49,8 +49,8 @@ export class OrderController {
   @ApiOperation({ summary: 'Get order by id' })
   @ApiResponse({ status: 200, type: OrderWithItemsDto })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
-  getOrderById(@Param('id') id: string): Promise<OrderWithItemsDto> {
-    return this.orderService.findOrderById(id);
+  getOrderById(@Param() idDto: IdDto): Promise<OrderWithItemsDto> {
+    return this.orderService.findOrderById(idDto.id);
   }
 
   @Post()
@@ -74,11 +74,11 @@ export class OrderController {
   @ApiOperation({ summary: 'Update order' })
   @ApiResponse({ status: 200, type: OrderDto })
   updateOrder(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body() order: UpdateOrderDto,
   ): Promise<OrderDto> {
     return this.orderService.updateOrder({
-      id,
+      id: idDto.id,
       ...order,
     });
   }
@@ -87,7 +87,7 @@ export class OrderController {
   @ApiOperation({ summary: 'Delete order' })
   @ApiResponse({ status: 200, type: StatusResponse })
   @HasRoles(RoleTypes.ADMIN, RoleTypes.SUBADMIN)
-  deleteOrder(@Param('id') id: string): Promise<StatusResponse> {
-    return this.orderService.deleteOrder(id);
+  deleteOrder(@Param() idDto: IdDto): Promise<StatusResponse> {
+    return this.orderService.deleteOrder(idDto.id);
   }
 }

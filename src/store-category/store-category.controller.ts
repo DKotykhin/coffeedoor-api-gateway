@@ -16,10 +16,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { RoleTypes } from '../common/types/enums';
-import { StatusResponse } from '../common/dto/status-response.dto';
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { RoleTypes } from '../common/types/enums';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 
 import { StoreCategoryService } from './store-category.service';
 import {
@@ -51,9 +51,9 @@ export class StoreCategoryController {
   @ApiOperation({ summary: 'Get store category by id with store items' })
   @ApiResponse({ status: 200, type: StoreCategoryWithItemsDto })
   getStoreCategoryById(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
   ): Promise<StoreCategoryWithItemsDto> {
-    return this.storeCategoryService.getStoreCategoryById(id);
+    return this.storeCategoryService.getStoreCategoryById(idDto.id);
   }
 
   @Post()
@@ -69,11 +69,11 @@ export class StoreCategoryController {
   @ApiOperation({ summary: 'Update store category' })
   @ApiResponse({ status: 200, type: StoreCategoryDto })
   updateStoreCategory(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body() updateMenuCategoryDto: UpdateStoreCategoryDto,
   ): Promise<StoreCategoryDto> {
     return this.storeCategoryService.updateStoreCategory({
-      id,
+      id: idDto.id,
       ...updateMenuCategoryDto,
     });
   }
@@ -81,7 +81,7 @@ export class StoreCategoryController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete store category' })
   @ApiResponse({ status: 200, type: StatusResponse })
-  deleteStoreCategory(@Param('id') id: string): Promise<StatusResponse> {
-    return this.storeCategoryService.deleteStoreCategory(id);
+  deleteStoreCategory(@Param() idDto: IdDto): Promise<StatusResponse> {
+    return this.storeCategoryService.deleteStoreCategory(idDto.id);
   }
 }

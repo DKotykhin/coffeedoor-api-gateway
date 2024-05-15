@@ -3,6 +3,7 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 
 import { LanguageCode } from '../common/types/enums';
+import { LanguageDto } from '../common/dto/_index';
 
 import { StoreCategoryService } from './store-category.service';
 import { StoreCategoryWithItemsDto } from './dto/store-category-with-items.dto';
@@ -18,8 +19,8 @@ export class AllStoreController {
   @ApiResponse({ type: StoreCategoryWithItemsDto, isArray: true })
   @ApiQuery({ name: 'language', enum: LanguageCode, required: true })
   getStoreByLanguage(
-    @Query('language') language: LanguageCode,
+    @Query() languageDto: LanguageDto,
   ): Promise<StoreCategoryWithItemsDto[]> {
-    return this.storeCategoryService.getStoreByLanguage(language);
+    return this.storeCategoryService.getStoreByLanguage(languageDto.language);
   }
 }

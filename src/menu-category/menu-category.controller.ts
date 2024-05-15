@@ -9,10 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-
-import { RoleTypes } from '../common/types/enums';
-import { HasRoles } from '../auth/decorators/roles.decorator';
-import { RolesGuard } from '../auth/guards/roles.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -20,7 +16,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { HasRoles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { RoleTypes } from '../common/types/enums';
 import { StatusResponse } from '../common/dto/status-response.dto';
+import { IdDto } from '../common/dto/id.dto';
+
 import { MenuCategoryService } from './menu-category.service';
 import {
   ChangeMenuCategoryPositionDto,
@@ -49,9 +50,9 @@ export class MenuCategoryController {
   @ApiOperation({ summary: 'Get a menu category by id' })
   @ApiResponse({ type: MenuCategoryWithMenuItemsDto })
   getMenuCategoryById(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
   ): Promise<MenuCategoryWithMenuItemsDto> {
-    return this.menuCategoryService.getMenuCategoryById(id);
+    return this.menuCategoryService.getMenuCategoryById(idDto.id);
   }
 
   @Post()
@@ -67,11 +68,11 @@ export class MenuCategoryController {
   @ApiOperation({ summary: 'Update a menu category' })
   @ApiResponse({ type: MenuCategoryDto })
   updateMenuCategory(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body() updateMenuCategoryDto: UpdateMenuCategoryDto,
   ): Promise<MenuCategoryDto> {
     return this.menuCategoryService.updateMenuCategory(
-      id,
+      idDto.id,
       updateMenuCategoryDto,
     );
   }
@@ -90,7 +91,7 @@ export class MenuCategoryController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a menu category' })
   @ApiResponse({ type: StatusResponse })
-  deleteMenuCategory(@Param('id') id: string): Promise<StatusResponse> {
-    return this.menuCategoryService.deleteMenuCategory(id);
+  deleteMenuCategory(@Param() idDto: IdDto): Promise<StatusResponse> {
+    return this.menuCategoryService.deleteMenuCategory(idDto.id);
   }
 }

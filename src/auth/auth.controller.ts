@@ -23,6 +23,7 @@ import { StatusResponse } from '../common/dto/status-response.dto';
 import { AuthService } from './auth.service';
 import { EmailDto, PasswordDto, SignInDto, SignUpDto } from './dto/auth.dto';
 import { GetUser } from './decorators/get-user.decorator';
+import { TokenDto } from '../common/dto/token.dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -61,8 +62,8 @@ export class AuthController {
     status: 200,
     type: StatusResponse,
   })
-  confirmEmail(@Param('token') token: string): Promise<StatusResponse> {
-    return this.authService.confirmEmail(token);
+  confirmEmail(@Param() tokenDto: TokenDto): Promise<StatusResponse> {
+    return this.authService.confirmEmail(tokenDto.token);
   }
 
   @Get('/resend-email')
@@ -93,9 +94,12 @@ export class AuthController {
     type: StatusResponse,
   })
   setNewPassword(
-    @Param('token') token: string,
+    @Param() tokenDto: TokenDto,
     @Body() passwordDto: PasswordDto,
   ): Promise<StatusResponse> {
-    return this.authService.setNewPassword(token, passwordDto.password);
+    return this.authService.setNewPassword(
+      tokenDto.token,
+      passwordDto.password,
+    );
   }
 }

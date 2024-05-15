@@ -20,7 +20,7 @@ import {
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { RoleTypes } from '../common/types/enums';
-import { StatusResponse } from '../common/dto/status-response.dto';
+import { IdDto, StatusResponse } from '../common/dto/_index';
 
 import {
   ChangeMenuItemPositionDto,
@@ -41,17 +41,15 @@ export class MenuItemController {
   @Get()
   @ApiOperation({ summary: 'Get menu items by category id' })
   @ApiResponse({ type: MenuItemDto, isArray: true })
-  findMenuItemsByCategoryId(
-    @Query('categoryId') categoryId: string,
-  ): Promise<MenuItemDto[]> {
-    return this.menuItemService.findMenuItemsByCategoryId(categoryId);
+  findMenuItemsByCategoryId(@Query() idDto: IdDto): Promise<MenuItemDto[]> {
+    return this.menuItemService.findMenuItemsByCategoryId(idDto.id);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get menu item by id' })
   @ApiResponse({ type: MenuItemDto })
-  findMenuItemById(@Param('id') id: string): Promise<MenuItemDto> {
-    return this.menuItemService.findMenuItemById(id);
+  findMenuItemById(@Param() idDto: IdDto): Promise<MenuItemDto> {
+    return this.menuItemService.findMenuItemById(idDto.id);
   }
 
   @Post()
@@ -67,10 +65,10 @@ export class MenuItemController {
   @ApiOperation({ summary: 'Update menu item' })
   @ApiResponse({ type: MenuItemDto })
   updateMenuItem(
-    @Param('id') id: string,
+    @Param() idDto: IdDto,
     @Body() updateMenuItemDto: UpdateMenuItemDto,
   ): Promise<MenuItemDto> {
-    return this.menuItemService.updateMenuItem(id, updateMenuItemDto);
+    return this.menuItemService.updateMenuItem(idDto.id, updateMenuItemDto);
   }
 
   @Patch('change-position')
@@ -87,7 +85,7 @@ export class MenuItemController {
   @Delete(':id')
   @ApiOperation({ summary: 'Delete menu item' })
   @ApiResponse({ type: StatusResponse })
-  deleteMenuItem(@Param('id') id: string): Promise<StatusResponse> {
-    return this.menuItemService.deleteMenuItem(id);
+  deleteMenuItem(@Param() idDto: IdDto): Promise<StatusResponse> {
+    return this.menuItemService.deleteMenuItem(idDto.id);
   }
 }

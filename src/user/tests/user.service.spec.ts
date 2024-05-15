@@ -18,10 +18,6 @@ describe('UserService', () => {
           provide: FileUploadService,
           useValue: {},
         },
-        {
-          provide: 'CACHE_MANAGER',
-          useValue: {},
-        },
       ],
     }).compile();
 

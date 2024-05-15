@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 import { errorCodeImplementation } from '../utils/error-code-implementation';
 import { FileUploadService } from '../file-upload/file-upload.service';
@@ -28,7 +26,6 @@ export class UserService implements OnModuleInit {
   constructor(
     @Inject('USER_SERVICE') private readonly userServiceClient: ClientGrpc,
     private readonly fileUploadService: FileUploadService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   onModuleInit() {
@@ -38,14 +35,9 @@ export class UserService implements OnModuleInit {
 
   async getUserByEmail(email: string): Promise<User> {
     try {
-      const cachedUser: User = await this.cacheManager.get('user');
-      if (cachedUser?.email === email) {
-        return cachedUser;
-      }
       const user = await firstValueFrom(
         this.userService.getUserByEmail({ email }),
       );
-      await this.cacheManager.set('user', user);
       return user;
     } catch (error) {
       const code = errorCodeImplementation(error.code);

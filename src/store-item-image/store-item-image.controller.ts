@@ -26,7 +26,7 @@ import {
 import { HasRoles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { RoleTypes } from '../common/types/enums';
-import { StatusResponse } from '../common/dto/status-response.dto';
+import { StatusResponse } from '../common/dto/_index';
 
 import { StoreItemImageService } from './store-item-image.service';
 import { ImageDto } from './dto/image.dto';

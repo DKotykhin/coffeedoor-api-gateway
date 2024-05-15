@@ -5,13 +5,14 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { CreateMenuCategoryDto } from '../src/menu-category/dto/_index';
 import { LanguageCode, RoleTypes } from '../src/common/types/enums';
+import { SignInDto } from '../src/auth/dto/auth.dto';
 
-const credentials = {
+const credentials: SignInDto = {
   email: 'kotykhin_d+1@ukr.net',
   password: 'Qq1234567',
 };
 
-const mockMenuCategory: CreateMenuCategoryDto = {
+const mockCreateMenuCategoryDto: CreateMenuCategoryDto = {
   language: LanguageCode.UA,
   title: 'Test title',
   description: 'Test description',
@@ -73,7 +74,7 @@ describe('Menu Controller (e2e)', () => {
     const res = await request(app.getHttpServer())
       .post('/menu-categories')
       .set('Authorization', `Bearer ${authToken}`)
-      .send(mockMenuCategory)
+      .send(mockCreateMenuCategoryDto)
       .expect(201);
     expect(res.body).toHaveProperty('id');
     expect(res.body).toHaveProperty('title', 'Test title');
@@ -93,7 +94,7 @@ describe('Menu Controller (e2e)', () => {
     const res = await request(app.getHttpServer())
       .patch(`/menu-categories/update/${menuCategoryId}`)
       .set('Authorization', `Bearer ${authToken}`)
-      .send({ ...mockMenuCategory, title: 'Updated test title' })
+      .send({ ...mockCreateMenuCategoryDto, title: 'Updated test title' })
       .expect(200);
     expect(res.body).toHaveProperty('id');
     expect(res.body).toHaveProperty('title', 'Updated test title');
