@@ -49,11 +49,10 @@ export class AuthService implements OnModuleInit {
     try {
       return await firstValueFrom(this.authService.signUp(signUpDto));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -71,11 +70,10 @@ export class AuthService implements OnModuleInit {
       this.logger.debug(`auth_token: ${auth_token}`);
       return user;
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -83,11 +81,10 @@ export class AuthService implements OnModuleInit {
     try {
       return await firstValueFrom(this.authService.confirmEmail({ token }));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -95,11 +92,10 @@ export class AuthService implements OnModuleInit {
     try {
       return await firstValueFrom(this.authService.resendEmail({ email }));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -107,11 +103,10 @@ export class AuthService implements OnModuleInit {
     try {
       return await firstValueFrom(this.authService.resetPassword(emailDto));
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 
@@ -124,11 +119,10 @@ export class AuthService implements OnModuleInit {
         this.authService.setNewPassword({ token, password }),
       );
     } catch (error) {
-      this.logger.error(error?.details);
-      throw new HttpException(
-        error?.details,
-        errorCodeImplementation(error?.code),
-      );
+      const code = errorCodeImplementation(error.code);
+      const message = error.details;
+      this.logger.error(`Error code: ${code} - ${message}`);
+      throw new HttpException(message, code);
     }
   }
 }

@@ -27,7 +27,7 @@ export class RolesGuard implements CanActivate {
       return true;
     }
     const req = context.switchToHttp().getRequest();
-    const isVerified = requiredRoles.some((role) => req.user.role === role);
+    const isVerified = requiredRoles.some((role) => req.user?.role === role);
     if (!isVerified) {
       this.logger.error(
         `User with role ${req.user.role} doesn't have permission to access this resource!`,
