@@ -7,8 +7,6 @@ import {
 } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 
 import { LanguageCode } from '../common/types/enums';
 import { errorCodeImplementation } from '../utils/error-code-implementation';
@@ -33,7 +31,6 @@ export class StoreCategoryService implements OnModuleInit {
   constructor(
     @Inject('STORE_CATEGORY_SERVICE')
     private readonly storeCategoryServiceClient: ClientGrpc,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private readonly fileUploadService: FileUploadService,
   ) {}
 
@@ -76,7 +73,6 @@ export class StoreCategoryService implements OnModuleInit {
         }),
       );
       await this.findImageUrls(storeCategoryList);
-      await this.cacheManager.set('store', storeCategoryList);
       return storeCategoryList;
     } catch (error) {
       const code = errorCodeImplementation(error.code);
