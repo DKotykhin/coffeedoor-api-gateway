@@ -15,7 +15,7 @@ export class FileUploadService {
   constructor(private readonly configService: ConfigService) {}
   protected readonly logger = new Logger(FileUploadService.name);
 
-  s3 = new S3Client({
+  private readonly s3Client = new S3Client({
     credentials: {
       accessKeyId: this.configService.get('AWS_ACCESS_KEY_ID'),
       secretAccessKey: this.configService.get('AWS_SECRET_ACCESS_KEY'),
@@ -29,7 +29,7 @@ export class FileUploadService {
       Key: fileKey,
     };
     const command = new GetObjectCommand(params);
-    const url = await getSignedUrl(this.s3, command, { expiresIn: 3600 });
+    const url = await getSignedUrl(this.s3Client, command, { expiresIn: 3600 });
 
     return url;
   }
@@ -51,8 +51,7 @@ export class FileUploadService {
         ContentType: 'image/webp',
       };
       const command = new PutObjectCommand(params);
-
-      await this.s3.send(command);
+      await this.s3Client.send(command);
 
       return fileName;
     } catch (err) {
@@ -86,8 +85,7 @@ export class FileUploadService {
         ContentType: 'image/webp',
       };
       const command = new PutObjectCommand(params);
-
-      await this.s3.send(command);
+      await this.s3Client.send(command);
 
       return storePath;
     } catch (err) {
@@ -106,7 +104,7 @@ export class FileUploadService {
     };
     const command = new DeleteObjectCommand(params);
     try {
-      await this.s3.send(command);
+      await this.s3Client.send(command);
     } catch (error) {
       throw new HttpException(
         "Can't delete image",
