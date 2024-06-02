@@ -2,16 +2,29 @@ import { ClientsProviderAsyncOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 
+import { HEALTH_CHECK_PACKAGE_NAME } from '../health-check/health-check.pb';
 import { MENU_CATEGORY_PACKAGE_NAME } from '../menu-category/menu-category.pb';
 import { MENU_ITEM_PACKAGE_NAME } from '../menu-item/menu-item.pb';
-import { HEALTH_CHECK_PACKAGE_NAME } from '../health-check/health-check.pb';
 import { AUTH_PACKAGE_NAME } from '../auth/auth.pb';
 import { USER_PACKAGE_NAME } from '../user/user.pb';
 import { STORE_CATEGORY_PACKAGE_NAME } from '../store-category/store-category.pb';
 import { STORE_ITEM_PACKAGE_NAME } from '../store-item/store-item.pb';
+import { STORE_ITEM_IMAGE_PACKAGE_NAME } from '../store-item-image/store-item-image.pb';
 import { ORDER_PACKAGE_NAME } from '../order/order.pb';
 import { ORDER_ITEM_PACKAGE_NAME } from '../order-item/order-item.pb';
-import { STORE_ITEM_IMAGE_PACKAGE_NAME } from '../store-item-image/store-item-image.pb';
+
+export const menuHealthCheckGrpcConfig: ClientsProviderAsyncOptions = {
+  name: 'MENU_HEALTH_CHECK_SERVICE',
+  useFactory: (configService: ConfigService) => ({
+    transport: Transport.GRPC,
+    options: {
+      package: HEALTH_CHECK_PACKAGE_NAME,
+      protoPath: join(__dirname, '../../proto/health-check.proto'),
+      url: `${configService.get<string>('MENU_SERVICE_HOST')}:${configService.get<string>('MENU_SERVICE_PORT')}`,
+    },
+  }),
+  inject: [ConfigService],
+};
 
 export const menuCategoryGrpcConfig: ClientsProviderAsyncOptions = {
   name: 'MENU_CATEGORY_SERVICE',
@@ -33,19 +46,6 @@ export const menuItemGrpcConfig: ClientsProviderAsyncOptions = {
     options: {
       package: MENU_ITEM_PACKAGE_NAME,
       protoPath: join(__dirname, '../../proto/menu/menu-item.proto'),
-      url: `${configService.get<string>('MENU_SERVICE_HOST')}:${configService.get<string>('MENU_SERVICE_PORT')}`,
-    },
-  }),
-  inject: [ConfigService],
-};
-
-export const menuHealthCheckGrpcConfig: ClientsProviderAsyncOptions = {
-  name: 'MENU_HEALTH_CHECK_SERVICE',
-  useFactory: (configService: ConfigService) => ({
-    transport: Transport.GRPC,
-    options: {
-      package: HEALTH_CHECK_PACKAGE_NAME,
-      protoPath: join(__dirname, '../../proto/health-check.proto'),
       url: `${configService.get<string>('MENU_SERVICE_HOST')}:${configService.get<string>('MENU_SERVICE_PORT')}`,
     },
   }),

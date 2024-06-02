@@ -7,14 +7,14 @@ import { validate } from './utils/env.validator';
 import { MenuCategoryModule } from './menu-category/menu-category.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { HealthCheckModule } from './health-check/health-check.module';
-import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 import { StoreCategoryModule } from './store-category/store-category.module';
 import { StoreItemModule } from './store-item/store-item.module';
+import { StoreItemImageModule } from './store-item-image/store-item-image.module';
 import { OrderItemModule } from './order-item/order-item.module';
 import { OrderModule } from './order/order.module';
 import { FileUploadModule } from './file-upload/file-upload.module';
-import { StoreItemImageModule } from './store-item-image/store-item-image.module';
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { StoreItemImageModule } from './store-item-image/store-item-image.module
     }),
     ScheduleModule.forRoot(),
     AuthModule,
+    FileUploadModule,
     HealthCheckModule,
     MenuCategoryModule,
     MenuItemModule,
@@ -36,9 +37,8 @@ import { StoreItemImageModule } from './store-item-image/store-item-image.module
     OrderModule,
     StoreCategoryModule,
     StoreItemModule,
-    UserModule,
-    FileUploadModule,
     StoreItemImageModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
