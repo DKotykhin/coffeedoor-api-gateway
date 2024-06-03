@@ -9,21 +9,14 @@ import {
   IsOptional,
   IsPositive,
   IsString,
-  IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { LanguageCode } from '../../common/types/enums';
+import { IdDto } from '../../common/dto/id.dto';
 
-class StoreCategory {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  @IsUUID()
-  id: string;
-}
 export class CreateStoreItemDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -113,6 +106,6 @@ export class CreateStoreItemDto {
   @IsObject()
   @IsNotEmptyObject()
   @ValidateNested()
-  @Type(() => StoreCategory)
-  category: StoreCategory;
+  @Type(() => IdDto)
+  category: IdDto;
 }
