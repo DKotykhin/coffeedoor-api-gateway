@@ -1,40 +1,60 @@
 #standalone container
-FROM node:18 as dev
+FROM node:alpine as dev
 
 WORKDIR /app
 
 COPY package.json /app
-COPY package-lock.json /app
+COPY pnpm-lock.yaml /app
 
-RUN npm install
+RUN npm install -g pnpm
+RUN pnpm install
 
 COPY . /app
 
-RUN npm run build
+RUN pnpm run build
 
 EXPOSE 4004
-# CMD [ "npm", "run", "start:dev" ]
-CMD [ "npm", "start" ]
+
+CMD [ "pnpm", "start" ]
 
 # common container
-FROM node:18 as prod
+FROM node:alpine as prod
 
 WORKDIR /coffeedoor-api-gateway
 
 COPY ./coffeedoor-api-gateway/package.json /coffeedoor-api-gateway
-COPY ./coffeedoor-api-gateway/package-lock.json /coffeedoor-api-gateway
+COPY ./coffeedoor-api-gateway/pnpm-lock.yaml /coffeedoor-api-gateway
 COPY ./coffeedoor-api-gateway/tsconfig.json tsconfig.json
 COPY ./coffeedoor-api-gateway/nest-cli.json nest-cli.json
 
-RUN npm install
+RUN npm install -g pnpm
+RUN pnpm install
 
 COPY /coffeedoor-api-gateway /coffeedoor-api-gateway
 
-RUN npm run build
+RUN pnpm run build
 
 EXPOSE 4004
-CMD [ "npm", "start" ]
+CMD [ "pnpm", "start" ]
 
 
 # npm config set registry https://registry.npmjs.org/
 # npm config set strict-ssl false
+
+
+# kubernetes container
+# FROM node:alpine
+
+# WORKDIR /app
+
+# COPY package.json /app
+# COPY pnpm-lock.yaml /app
+
+# RUN npm install -g pnpm
+# RUN pnpm install
+
+# COPY . /app 
+
+# RUN pnpm run build
+
+# CMD ["node", "dist/main"]
